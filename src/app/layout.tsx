@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { ScenarioProvider } from "@/contexts/ScenarioContext";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
@@ -18,7 +19,7 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "PoliceTrain - Интерактивная тренировочная платформа",
   description: "Виртуальная платформа для подготовки полицейских к различным ситуациям",
-}
+};
 
 export default function RootLayout({
   children,
@@ -32,7 +33,9 @@ export default function RootLayout({
       >
         <div className="flex flex-col min-h-screen">
           <Header />
-          <main className="flex-grow">{children}</main>
+          <ScenarioProvider>
+            <main className="flex-grow">{children}</main>
+          </ScenarioProvider>
           <Footer />
         </div>
       </body>

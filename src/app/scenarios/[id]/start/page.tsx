@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowRight, Book, Target, Scale } from "lucide-react"
-import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
+import Link from "next/link"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge"
 const scenariosData = [
   {
     id: "1",
-    title: "Патрулирование в ночное время",
+    title: "Задержание при патрулировании города",
     lawIds: [128, 129, 130, 131, 132, 133, 134],
     objectives: [
       "Проверить знание статьи 131 УПК РК и процессуальных норм задержания.",

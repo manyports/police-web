@@ -32,16 +32,16 @@ export default function ScenariosPage() {
   const scenarios = [
     {
       id: 1,
-      title: "Патрулирование в ночное время",
+      title: "Задержание при патрулировании города",
       category: "patrol",
-      difficulty: "medium",
+      difficulty: "easy",
       duration: "30-45 мин",
-      points: 150,
+      points: 70,
       rating: 4.8,
       reviews: 124,
       image: "/placeholder.svg?height=400&width=600&text=Патрулирование",
       description:
-        "Сценарий моделирует ночное патрулирование в городском районе с высоким уровнем преступности. Отработка навыков наблюдения, реагирования на подозрительное поведение и взаимодействия с гражданами.",
+        "Экзаменационный сценарий на знание статьи 131 УПК РК. Игрок выступает в роли сотрудника полиции, который должен провести законное процессуальное задержание. Каждое действие влияет на общий балл за экзамен.",
       tags: ["Ночь", "Город", "Патруль"],
       isNew: false,
       isPopular: true,
@@ -208,7 +208,7 @@ export default function ScenariosPage() {
               <Link href="/scenarios/create">Создать сценарий</Link>
             </Button>
           </div>
-
+        
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-grow">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -277,7 +277,7 @@ export default function ScenariosPage() {
           </div>
         </div>
       </div>
-
+          
       <div className="mx-auto w-[90%] md:w-[80%] max-w-7xl py-8">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="md:w-1/4 w-full">
@@ -374,7 +374,7 @@ export default function ScenariosPage() {
                       </div>
                     </div>
                     <div className="p-4">
-                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{scenario.description}</p>
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-4">{scenario.description}</p>
                       <div className="flex flex-wrap gap-2 mb-4">
                         {scenario.tags.map((tag) => (
                           <Badge key={tag} variant="secondary" className="bg-blue-50 text-primary">
