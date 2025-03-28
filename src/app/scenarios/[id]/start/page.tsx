@@ -82,7 +82,9 @@ interface Scenario {
 }
 
 export default function ScenarioSimulationPage({ params }: { params: PageParams }) {
-  const { id } = use(params as any)
+  const unwrappedParams = use(params as any)
+  // @ts-ignore
+  const id = unwrappedParams.id
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -98,6 +100,22 @@ export default function ScenarioSimulationPage({ params }: { params: PageParams 
   const [showIntro, setShowIntro] = useState(true)
   const [isLoading, setIsLoading] = useState(true)
   const [scenarioData, setScenarioData] = useState<Scenario | null>(null)
+  const [lawsData, setLawsData] = useState<{ laws: LegalCode[] }>({ laws: [] })
+
+  // Fetch laws data
+  useEffect(() => {
+    const fetchLawsData = async () => {
+      try {
+        const response = await fetch('/data/laws.json')
+        const data = await response.json()
+        setLawsData(data)
+      } catch (error) {
+        console.error('Error fetching laws data:', error)
+      }
+    }
+    
+    fetchLawsData()
+  }, [])
 
   // Fetch scenario data
   useEffect(() => {
@@ -153,22 +171,7 @@ export default function ScenarioSimulationPage({ params }: { params: PageParams 
                 ],
               },
             ],
-            legalCodes: [
-              {
-                id: 1,
-                title: "Уголовный кодекс РК",
-                article: "Статья 293. Хулиганство",
-                description: "Особо злостное нарушение общественного порядка, выражающее явное неуважение к обществу, сопровождающееся применением насилия к гражданам либо угрозой его применения",
-                link: "https://adilet.zan.kz/rus/docs/K950000000_"
-              },
-              {
-                id: 2,
-                title: "Уголовный кодекс РК",
-                article: "Статья 188. Кража",
-                description: "Тайное хищение чужого имущества",
-                link: "https://adilet.zan.kz/rus/docs/K950000000_"
-              }
-            ],
+            legalCodes: lawsData.laws.filter((law: LegalCode) => law.id === 1 || law.id === 2),
             points: "100",
           },
           {
@@ -219,29 +222,7 @@ export default function ScenarioSimulationPage({ params }: { params: PageParams 
                 ],
               },
             ],
-            legalCodes: [
-              {
-                id: 1,
-                title: "Уголовный кодекс РК",
-                article: "Статья 184. Захват заложника",
-                description: "Захват или удержание лица в качестве заложника, совершенные в целях понуждения государства, организации или гражданина совершить какое-либо действие или воздержаться от совершения какого-либо действия как условия освобождения заложника",
-                link: "https://adilet.zan.kz/rus/docs/K950000000_"
-              },
-              {
-                id: 2,
-                title: "Уголовный кодекс РК",
-                article: "Статья 185. Похищение человека",
-                description: "Тайное или открытое похищение человека, совершенное в целях получения выкупа, использования как заложника, совершения преступления или принуждения к совершению преступления",
-                link: "https://adilet.zan.kz/rus/docs/K950000000_"
-              },
-              {
-                id: 3,
-                title: "Уголовный кодекс РК",
-                article: "Статья 186. Незаконное лишение свободы",
-                description: "Незаконное лишение человека свободы, не связанное с его похищением",
-                link: "https://adilet.zan.kz/rus/docs/K950000000_"
-              }
-            ],
+            legalCodes: lawsData.laws.filter((law: LegalCode) => law.id === 3 || law.id === 4 || law.id === 5),
             points: "150",
           },
           {
@@ -291,22 +272,7 @@ export default function ScenarioSimulationPage({ params }: { params: PageParams 
                 ],
               },
             ],
-            legalCodes: [
-              {
-                id: 1,
-                title: "Уголовно-процессуальный кодекс РК",
-                article: "Статья 219. Осмотр места происшествия",
-                description: "Порядок проведения осмотра места происшествия, фиксации и изъятия следов преступления и вещественных доказательств",
-                link: "https://adilet.zan.kz/rus/docs/K950000000_"
-              },
-              {
-                id: 2,
-                title: "Уголовно-процессуальный кодекс РК",
-                article: "Статья 220. Протокол осмотра",
-                description: "Требования к составлению протокола осмотра места происшествия",
-                link: "https://adilet.zan.kz/rus/docs/K950000000_"
-              }
-            ],
+            legalCodes: lawsData.laws.filter((law: LegalCode) => law.id === 6 || law.id === 7),
             points: "120",
           },
           {
@@ -347,31 +313,16 @@ export default function ScenarioSimulationPage({ params }: { params: PageParams 
                   },
                   {
                     id: 2,
-                    text: "Изолировать зараженные системы",
+                    text: "Изолировать критические узлы сети",
                     feedback: {
                       type: "positive",
-                      text: "Верное решение. Это позволит локализовать атаку и сохранить работоспособность критических систем.",
+                      text: "Отличное решение. Изоляция критических узлов поможет предотвратить распространение атаки, сохранив при этом работоспособность основных систем.",
                     },
                   },
                 ],
               },
             ],
-            legalCodes: [
-              {
-                id: 1,
-                title: "Уголовный кодекс РК",
-                article: "Статья 205. Неправомерный доступ к компьютерной информации",
-                description: "Неправомерный доступ к охраняемой законом компьютерной информации, если это деяние повлекло уничтожение, блокирование, модификацию либо копирование информации",
-                link: "https://adilet.zan.kz/rus/docs/K950000000_"
-              },
-              {
-                id: 2,
-                title: "Закон РК",
-                article: "О кибербезопасности",
-                description: "Основные положения о защите критической информационной инфраструктуры",
-                link: "https://adilet.zan.kz/rus/docs/K950000000_"
-              }
-            ],
+            legalCodes: lawsData.laws.filter((law: LegalCode) => law.id === 8 || law.id === 9),
             points: "180",
           }
         ]
@@ -392,7 +343,7 @@ export default function ScenarioSimulationPage({ params }: { params: PageParams 
     }
 
     fetchScenario()
-  }, [id])
+  }, [id, lawsData.laws])
 
   // Progress timer effect
   useEffect(() => {
@@ -820,4 +771,5 @@ export default function ScenarioSimulationPage({ params }: { params: PageParams 
     </div>
   )
 }
+
 
