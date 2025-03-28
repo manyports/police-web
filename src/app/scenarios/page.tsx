@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Search, Filter, ChevronDown, Users, Clock, Star, Play, Info, AlertTriangle, Zap } from "lucide-react"
+import { Search, Filter, ChevronDown, Clock, Star, Play, Info, AlertTriangle, Zap, Award } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge"
 
 export default function ScenariosPage() {
   const [activeCategory, setActiveCategory] = useState("all")
-  const [activeFilter, setActiveFilter] = useState("popular")
+  const [activeFilter, setActiveFilter] = useState("all")
   const [isFilterOpen, setIsFilterOpen] = useState(false)
 
   const categories = [
@@ -23,6 +23,7 @@ export default function ScenariosPage() {
   ]
 
   const filters = [
+    { id: "all", name: "Все" },
     { id: "popular", name: "Популярные" },
     { id: "new", name: "Новые" },
     { id: "recommended", name: "Рекомендуемые" },
@@ -35,7 +36,7 @@ export default function ScenariosPage() {
       category: "patrol",
       difficulty: "medium",
       duration: "30-45 мин",
-      players: "1-2",
+      points: 150,
       rating: 4.8,
       reviews: 124,
       image: "/placeholder.svg?height=400&width=600&text=Патрулирование",
@@ -51,7 +52,7 @@ export default function ScenariosPage() {
       category: "hostage",
       difficulty: "hard",
       duration: "45-60 мин",
-      players: "4-8",
+      points: 350,
       rating: 4.9,
       reviews: 87,
       image: "/placeholder.svg?height=400&width=600&text=Заложники",
@@ -67,7 +68,7 @@ export default function ScenariosPage() {
       category: "investigation",
       difficulty: "medium",
       duration: "40-50 мин",
-      players: "1-3",
+      points: 200,
       rating: 4.7,
       reviews: 56,
       image: "/placeholder.svg?height=400&width=600&text=Расследование",
@@ -83,7 +84,7 @@ export default function ScenariosPage() {
       category: "cyber",
       difficulty: "hard",
       duration: "50-70 мин",
-      players: "2-4",
+      points: 300,
       rating: 4.6,
       reviews: 42,
       image: "/placeholder.svg?height=400&width=600&text=Киберпреступления",
@@ -96,10 +97,10 @@ export default function ScenariosPage() {
     {
       id: 5,
       title: "Штурм здания с террористами",
-      category: "tactical",
+      category: "investigation",
       difficulty: "extreme",
       duration: "30-40 мин",
-      players: "4-8",
+      points: 400,
       rating: 4.9,
       reviews: 103,
       image: "/placeholder.svg?height=400&width=600&text=Тактический",
@@ -115,7 +116,7 @@ export default function ScenariosPage() {
       category: "patrol",
       difficulty: "easy",
       duration: "20-30 мин",
-      players: "1-2",
+      points: 100,
       rating: 4.5,
       reviews: 78,
       image: "/placeholder.svg?height=400&width=600&text=ДТП",
@@ -138,6 +139,10 @@ export default function ScenariosPage() {
 
     if (activeFilter === "popular" && !scenario.isPopular) {
       return false
+    }
+
+    if (activeFilter === "all") {
+      return true
     }
 
     return true
@@ -209,6 +214,16 @@ export default function ScenariosPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input type="search" placeholder="Поиск сценариев..." className="pl-10" />
             </div>
+            <Button 
+              variant="outline" 
+              className="flex items-center gap-2"
+              onClick={() => {
+                setActiveCategory("all")
+                setActiveFilter("all")
+              }}
+            >
+              Сбросить фильтры
+            </Button>
             <div className="relative">
               <Button
                 variant="outline"
@@ -237,13 +252,13 @@ export default function ScenariosPage() {
                   </div>
 
                   <div className="mb-4">
-                    <h3 className="font-medium mb-2">Количество игроков</h3>
+                    <h3 className="font-medium mb-2">Баллы</h3>
                     <div className="space-y-2">
-                      {["1", "2-3", "4-6", "7+"].map((players) => (
-                        <div key={players} className="flex items-center">
-                          <input type="checkbox" id={`players-${players}`} className="mr-2" />
-                          <label htmlFor={`players-${players}`} className="text-sm">
-                            {players} игроков
+                      {["0-100", "101-200", "201-300", "301+"].map((pointsRange) => (
+                        <div key={pointsRange} className="flex items-center">
+                          <input type="checkbox" id={`points-${pointsRange}`} className="mr-2" />
+                          <label htmlFor={`points-${pointsRange}`} className="text-sm">
+                            {pointsRange} баллов
                           </label>
                         </div>
                       ))}
@@ -374,8 +389,8 @@ export default function ScenariosPage() {
                             <span>{scenario.duration}</span>
                           </div>
                           <div className="flex items-center gap-1">
-                            <Users className="h-4 w-4" />
-                            <span>{scenario.players}</span>
+                            <Award className="h-4 w-4" />
+                            <span>{scenario.points} баллов</span>
                           </div>
                         </div>
                         <div className="flex items-center gap-1">

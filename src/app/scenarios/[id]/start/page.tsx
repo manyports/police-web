@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Play,
@@ -19,13 +19,70 @@ import {
   Mic,
   MicOff,
   Volume,
+  Goal,
 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 
-export default function ScenarioSimulationPage({ params }: { params: { id: string } }) {
+type PageParams = {
+  id: string
+}
+
+interface ScenarioOption {
+  id: number
+  text: string
+  feedback: {
+    type: string
+    text: string
+  }
+}
+
+interface ScenarioStep {
+  id: number
+  title: string
+  description: string
+  image: string
+  options: ScenarioOption[]
+}
+
+interface TeamMember {
+  id: number
+  name: string
+  role: string
+  avatar: string
+}
+
+interface LegalCode {
+  id: number
+  title: string
+  article: string
+  description: string
+  link: string
+}
+
+interface Scenario {
+  id: number
+  title: string
+  category: string
+  difficulty: string
+  duration: string
+  rating: number
+  reviews: number
+  image: string
+  description: string
+  tags: string[]
+  isNew: boolean
+  isPopular: boolean
+  objectives: string[]
+  steps: ScenarioStep[]
+  legalCodes: LegalCode[]
+  points: string
+}
+
+export default function ScenarioSimulationPage({ params }: { params: PageParams }) {
+  const { id } = use(params as any)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -39,216 +96,305 @@ export default function ScenarioSimulationPage({ params }: { params: { id: strin
   const [micActive, setMicActive] = useState(false)
   const [teamChatOpen, setTeamChatOpen] = useState(false)
   const [showIntro, setShowIntro] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
+  const [scenarioData, setScenarioData] = useState<Scenario | null>(null)
 
-  const scenario = {
-    id: params.id,
-    title: "Захват заложников в банке",
-    description:
-      "Сложная ситуация с захватом заложников в банке. Тренировка навыков ведения переговоров, тактического планирования и координации действий группы.",
-    difficulty: "hard",
-    duration: "45-60 мин",
-    players: "4-8",
-    objectives: [
-      "Установить контакт с преступниками",
-      "Оценить ситуацию и риски",
-      "Разработать план освобождения заложников",
-      "Минимизировать потери среди гражданских лиц",
-      "Задержать преступников",
-    ],
-    steps: [
-      {
-        id: 1,
-        title: "Прибытие на место",
-        description:
-          "Вы прибыли к зданию банка. По предварительной информации, внутри находятся 3-4 вооруженных преступника и около 15 заложников.",
-        image: "/placeholder.svg?height=720&width=1280&text=Прибытие+на+место",
-        options: [
+  // Fetch scenario data
+  useEffect(() => {
+    const fetchScenario = async () => {
+      try {
+        // In a real app, this would be an API call
+        // For now, we'll use the static data from scenarios page
+        const scenarios = [
           {
             id: 1,
-            text: "Немедленно штурмовать здание",
-            feedback: {
-              type: "negative",
-              text: "Поспешные действия без разведки и плана могут привести к жертвам среди заложников. Необходимо сначала оценить ситуацию.",
-            },
+            title: "Патрулирование в ночное время",
+            category: "patrol",
+            difficulty: "medium",
+            duration: "30-45 мин",
+            rating: 4.8,
+            reviews: 124,
+            image: "/placeholder.svg?height=400&width=600&text=Патрулирование",
+            description:
+              "Сценарий моделирует ночное патрулирование в городском районе с высоким уровнем преступности. Отработка навыков наблюдения, реагирования на подозрительное поведение и взаимодействия с гражданами.",
+            tags: ["Ночь", "Город", "Патруль"],
+            isNew: false,
+            isPopular: true,
+            objectives: [
+              "Обеспечить безопасность в районе",
+              "Выявить подозрительную активность",
+              "Правильно реагировать на происшествия",
+              "Взаимодействовать с гражданами",
+              "Документировать все инциденты",
+            ],
+            steps: [
+              {
+                id: 1,
+                title: "Начало патруля",
+                description: "Вы начинаете ночное патрулирование в районе с высоким уровнем преступности.",
+                image: "/placeholder.svg?height=720&width=1280&text=Начало+патруля",
+                options: [
+                  {
+                    id: 1,
+                    text: "Начать с осмотра темных переулков",
+                    feedback: {
+                      type: "positive",
+                      text: "Хорошее решение. Темные переулки часто становятся местом совершения преступлений.",
+                    },
+                  },
+                  {
+                    id: 2,
+                    text: "Сначала проверить освещенные улицы",
+                    feedback: {
+                      type: "neutral",
+                      text: "Освещенные улицы тоже важны, но преступники чаще действуют в темных местах.",
+                    },
+                  },
+                ],
+              },
+            ],
+            legalCodes: [
+              {
+                id: 1,
+                title: "Уголовный кодекс РК",
+                article: "Статья 293. Хулиганство",
+                description: "Особо злостное нарушение общественного порядка, выражающее явное неуважение к обществу, сопровождающееся применением насилия к гражданам либо угрозой его применения",
+                link: "https://adilet.zan.kz/rus/docs/K950000000_"
+              },
+              {
+                id: 2,
+                title: "Уголовный кодекс РК",
+                article: "Статья 188. Кража",
+                description: "Тайное хищение чужого имущества",
+                link: "https://adilet.zan.kz/rus/docs/K950000000_"
+              }
+            ],
+            points: "100",
           },
           {
             id: 2,
-            text: "Оцепить территорию и начать переговоры",
-            feedback: {
-              type: "positive",
-              text: "Правильное решение. Оцепление территории и начало переговоров позволяет выиграть время для оценки ситуации и подготовки плана действий.",
-            },
+            title: "Захват заложников в банке",
+            category: "hostage",
+            difficulty: "hard",
+            duration: "45-60 мин",
+            rating: 4.9,
+            reviews: 87,
+            image: "/placeholder.svg?height=400&width=600&text=Заложники",
+            description:
+              "Сложная ситуация с захватом заложников в банке. Тренировка навыков ведения переговоров, тактического планирования и координации действий группы.",
+            tags: ["Заложники", "Переговоры", "Тактика"],
+            isNew: false,
+            isPopular: true,
+            objectives: [
+              "Установить контакт с преступниками",
+              "Оценить ситуацию и риски",
+              "Разработать план освобождения заложников",
+              "Минимизировать потери среди гражданских лиц",
+              "Задержать преступников",
+            ],
+            steps: [
+              {
+                id: 1,
+                title: "Прибытие на место",
+                description:
+                  "Вы прибыли к зданию банка. По предварительной информации, внутри находятся 3-4 вооруженных преступника и около 15 заложников.",
+                image: "/placeholder.svg?height=720&width=1280&text=Прибытие+на+место",
+                options: [
+                  {
+                    id: 1,
+                    text: "Немедленно штурмовать здание",
+                    feedback: {
+                      type: "negative",
+                      text: "Поспешные действия без разведки и плана могут привести к жертвам среди заложников. Необходимо сначала оценить ситуацию.",
+                    },
+                  },
+                  {
+                    id: 2,
+                    text: "Оцепить территорию и начать переговоры",
+                    feedback: {
+                      type: "positive",
+                      text: "Правильное решение. Оцепление территории и начало переговоров позволяет выиграть время для оценки ситуации и подготовки плана действий.",
+                    },
+                  },
+                ],
+              },
+            ],
+            legalCodes: [
+              {
+                id: 1,
+                title: "Уголовный кодекс РК",
+                article: "Статья 184. Захват заложника",
+                description: "Захват или удержание лица в качестве заложника, совершенные в целях понуждения государства, организации или гражданина совершить какое-либо действие или воздержаться от совершения какого-либо действия как условия освобождения заложника",
+                link: "https://adilet.zan.kz/rus/docs/K950000000_"
+              },
+              {
+                id: 2,
+                title: "Уголовный кодекс РК",
+                article: "Статья 185. Похищение человека",
+                description: "Тайное или открытое похищение человека, совершенное в целях получения выкупа, использования как заложника, совершения преступления или принуждения к совершению преступления",
+                link: "https://adilet.zan.kz/rus/docs/K950000000_"
+              },
+              {
+                id: 3,
+                title: "Уголовный кодекс РК",
+                article: "Статья 186. Незаконное лишение свободы",
+                description: "Незаконное лишение человека свободы, не связанное с его похищением",
+                link: "https://adilet.zan.kz/rus/docs/K950000000_"
+              }
+            ],
+            points: "150",
           },
           {
             id: 3,
-            text: "Запросить дополнительные силы и ждать",
-            feedback: {
-              type: "neutral",
-              text: "Запрос дополнительных сил оправдан, но пассивное ожидание может привести к эскалации ситуации. Необходимо предпринимать активные действия по оценке обстановки.",
-            },
-          },
-        ],
-      },
-      {
-        id: 2,
-        title: "Переговоры с преступниками",
-        description:
-          "Установлен контакт с главарем преступной группы. Он требует предоставить транспорт для бегства и гарантии безопасности в обмен на заложников.",
-        image: "/placeholder.svg?height=720&width=1280&text=Переговоры",
-        options: [
-          {
-            id: 1,
-            text: "Согласиться на все требования",
-            feedback: {
-              type: "negative",
-              text: "Немедленное согласие на все требования может восприниматься как слабость и привести к выдвижению новых требований. Необходимо вести переговоры более стратегически.",
-            },
-          },
-          {
-            id: 2,
-            text: "Отказать в требованиях и угрожать штурмом",
-            feedback: {
-              type: "negative",
-              text: "Прямые угрозы могут спровоцировать преступников на причинение вреда заложникам. Это увеличивает риск жертв.",
-            },
-          },
-          {
-            id: 3,
-            text: "Вести переговоры, выигрывая время для подготовки операции",
-            feedback: {
-              type: "positive",
-              text: "Оптимальное решение. Переговоры позволяют выиграть время для разработки плана, сбора информации и подготовки штурмовой группы, если переговоры зайдут в тупик.",
-            },
-          },
-        ],
-      },
-      {
-        id: 3,
-        title: "Планирование операции",
-        description:
-          "Получена информация о расположении преступников и заложников внутри здания. Необходимо разработать план действий.",
-        image: "/placeholder.svg?height=720&width=1280&text=Планирование",
-        options: [
-          {
-            id: 1,
-            text: "Использовать снайперов для нейтрализации преступников",
-            feedback: {
-              type: "neutral",
-              text: "Использование снайперов может быть эффективным, но только при наличии четкой видимости целей и уверенности в отсутствии риска для заложников. Требуется дополнительная разведка.",
-            },
-          },
-          {
-            id: 2,
-            text: "Провести скрытное проникновение через служебные помещения",
-            feedback: {
-              type: "positive",
-              text: "Хорошее решение. Скрытное проникновение минимизирует риск для заложников и позволяет застать преступников врасплох.",
-            },
-          },
-          {
-            id: 3,
-            text: "Использовать газ для нейтрализации всех находящихся в здании",
-            feedback: {
-              type: "negative",
-              text: "Использование газа в замкнутом пространстве с большим количеством гражданских лиц создает высокий риск для их здоровья и жизни. Это крайняя мера, которую следует применять только в исключительных случаях.",
-            },
-          },
-        ],
-      },
-      {
-        id: 4,
-        title: "Штурм здания",
-        description:
-          "Переговоры зашли в тупик, преступники начинают проявлять агрессию. Принято решение о проведении штурма.",
-        image: "/placeholder.svg?height=720&width=1280&text=Штурм",
-        options: [
-          {
-            id: 1,
-            text: "Провести одновременный штурм со всех сторон",
-            feedback: {
-              type: "neutral",
-              text: "Одновременный штурм может быть эффективным, но требует высокого уровня координации и создает риск перекрестного огня. Необходимо четкое распределение зон ответственности.",
-            },
+            title: "Расследование места преступления",
+            category: "investigation",
+            difficulty: "medium",
+            duration: "40-50 мин",
+            rating: 4.7,
+            reviews: 56,
+            image: "/placeholder.svg?height=400&width=600&text=Расследование",
+            description:
+              "Детальное изучение места преступления, сбор улик и формирование версий. Развитие навыков наблюдательности, логического мышления и процедурных знаний.",
+            tags: ["Улики", "Анализ", "Криминалистика"],
+            isNew: true,
+            isPopular: false,
+            objectives: [
+              "Осмотреть место преступления",
+              "Собрать все улики",
+              "Опросить свидетелей",
+              "Сформировать версии происшествия",
+              "Составить протокол осмотра"
+            ],
+            steps: [
+              {
+                id: 1,
+                title: "Начало осмотра",
+                description: "Вы прибыли на место преступления. Необходимо организовать работу следственно-оперативной группы.",
+                image: "/placeholder.svg?height=720&width=1280&text=Осмотр+места+преступления",
+                options: [
+                  {
+                    id: 1,
+                    text: "Начать осмотр с центра места происшествия",
+                    feedback: {
+                      type: "positive",
+                      text: "Правильное решение. Осмотр от центра к периферии позволяет не упустить важные детали.",
+                    },
+                  },
+                  {
+                    id: 2,
+                    text: "Сразу опросить свидетелей",
+                    feedback: {
+                      type: "neutral",
+                      text: "Опрос свидетелей важен, но сначала нужно зафиксировать обстановку на месте происшествия.",
+                    },
+                  },
+                ],
+              },
+            ],
+            legalCodes: [
+              {
+                id: 1,
+                title: "Уголовно-процессуальный кодекс РК",
+                article: "Статья 219. Осмотр места происшествия",
+                description: "Порядок проведения осмотра места происшествия, фиксации и изъятия следов преступления и вещественных доказательств",
+                link: "https://adilet.zan.kz/rus/docs/K950000000_"
+              },
+              {
+                id: 2,
+                title: "Уголовно-процессуальный кодекс РК",
+                article: "Статья 220. Протокол осмотра",
+                description: "Требования к составлению протокола осмотра места происшествия",
+                link: "https://adilet.zan.kz/rus/docs/K950000000_"
+              }
+            ],
+            points: "120",
           },
           {
-            id: 2,
-            text: "Использовать отвлекающий маневр и основную штурмовую группу",
-            feedback: {
-              type: "positive",
-              text: "Отличное решение. Отвлекающий маневр позволяет перенаправить внимание преступников, в то время как основная группа может действовать более эффективно.",
-            },
-          },
-          {
-            id: 3,
-            text: "Дождаться, пока преступники сами выйдут с заложниками",
-            feedback: {
-              type: "negative",
-              text: "Пассивное ожидание в ситуации, когда преступники проявляют агрессию, увеличивает риск для заложников. Необходимы активные действия.",
-            },
-          },
-        ],
-      },
-      {
-        id: 5,
-        title: "Эвакуация заложников",
-        description: "Преступники нейтрализованы, необходимо организовать эвакуацию заложников.",
-        image: "/placeholder.svg?height=720&width=1280&text=Эвакуация",
-        options: [
-          {
-            id: 1,
-            text: "Быстро вывести всех заложников одновременно",
-            feedback: {
-              type: "negative",
-              text: "Массовая одновременная эвакуация может привести к панике и давке. Кроме того, среди заложников могут быть сообщники преступников.",
-            },
-          },
-          {
-            id: 2,
-            text: "Проверить каждого заложника перед эвакуацией",
-            feedback: {
-              type: "positive",
-              text: "Правильное решение. Проверка заложников позволяет выявить возможных сообщников и оказать первую помощь пострадавшим.",
-            },
-          },
-          {
-            id: 3,
-            text: "Сначала эвакуировать раненых, затем остальных",
-            feedback: {
-              type: "neutral",
-              text: "Приоритет эвакуации раненых оправдан, но необходимо также обеспечить безопасность процесса эвакуации для всех заложников.",
-            },
-          },
-        ],
-      },
-    ],
-    team: [
-      {
-        id: 1,
-        name: "Капитан Иванов",
-        role: "Руководитель операции",
-        avatar: "/placeholder.svg?height=100&width=100",
-      },
-      {
-        id: 2,
-        name: "Лейтенант Петров",
-        role: "Переговорщик",
-        avatar: "/placeholder.svg?height=100&width=100",
-      },
-      {
-        id: 3,
-        name: "Сержант Сидоров",
-        role: "Командир штурмовой группы",
-        avatar: "/placeholder.svg?height=100&width=100",
-      },
-      {
-        id: 4,
-        name: "Старший лейтенант Козлов",
-        role: "Снайпер",
-        avatar: "/placeholder.svg?height=100&width=100",
-      },
-    ],
-  }
+            id: 4,
+            title: "Кибератака на инфраструктуру",
+            category: "cyber",
+            difficulty: "hard",
+            duration: "50-70 мин",
+            rating: 4.6,
+            reviews: 42,
+            image: "/placeholder.svg?height=400&width=600&text=Киберпреступления",
+            description:
+              "Реагирование на кибератаку, направленную на критическую инфраструктуру. Отработка навыков цифровой криминалистики, координации с техническими специалистами и принятия решений в условиях неопределенности.",
+            tags: ["Кибербезопасность", "Технологии", "Расследование"],
+            isNew: true,
+            isPopular: false,
+            objectives: [
+              "Локализовать источник атаки",
+              "Минимизировать ущерб",
+              "Собрать цифровые улики",
+              "Восстановить работу систем",
+              "Предотвратить повторные атаки"
+            ],
+            steps: [
+              {
+                id: 1,
+                title: "Обнаружение атаки",
+                description: "Зафиксирована массовая кибератака на критическую инфраструктуру города.",
+                image: "/placeholder.svg?height=720&width=1280&text=Кибератака",
+                options: [
+                  {
+                    id: 1,
+                    text: "Отключить все системы",
+                    feedback: {
+                      type: "negative",
+                      text: "Полное отключение систем может привести к коллапсу городской инфраструктуры.",
+                    },
+                  },
+                  {
+                    id: 2,
+                    text: "Изолировать зараженные системы",
+                    feedback: {
+                      type: "positive",
+                      text: "Верное решение. Это позволит локализовать атаку и сохранить работоспособность критических систем.",
+                    },
+                  },
+                ],
+              },
+            ],
+            legalCodes: [
+              {
+                id: 1,
+                title: "Уголовный кодекс РК",
+                article: "Статья 205. Неправомерный доступ к компьютерной информации",
+                description: "Неправомерный доступ к охраняемой законом компьютерной информации, если это деяние повлекло уничтожение, блокирование, модификацию либо копирование информации",
+                link: "https://adilet.zan.kz/rus/docs/K950000000_"
+              },
+              {
+                id: 2,
+                title: "Закон РК",
+                article: "О кибербезопасности",
+                description: "Основные положения о защите критической информационной инфраструктуры",
+                link: "https://adilet.zan.kz/rus/docs/K950000000_"
+              }
+            ],
+            points: "180",
+          }
+        ]
 
+        const selectedScenario = scenarios.find((s) => s.id === parseInt(id))
+        if (selectedScenario) {
+          setScenarioData(selectedScenario)
+        } else {
+          // Handle scenario not found
+          window.location.href = "/scenarios"
+        }
+      } catch (error) {
+        console.error("Error fetching scenario:", error)
+        window.location.href = "/scenarios"
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchScenario()
+  }, [id])
+
+  // Progress timer effect
   useEffect(() => {
     if (isPlaying) {
       const timer = setInterval(() => {
@@ -267,13 +413,15 @@ export default function ScenarioSimulationPage({ params }: { params: { id: strin
     }
   }, [isPlaying])
 
+  // Time display effect
   useEffect(() => {
-    const totalSeconds = Math.floor((progress / 100) * 600) 
+    const totalSeconds = Math.floor((progress / 100) * 600)
     const minutes = Math.floor(totalSeconds / 60)
     const seconds = totalSeconds % 60
     setCurrentTime(`${minutes}:${seconds.toString().padStart(2, "0")}`)
   }, [progress])
 
+  // Controls visibility effect
   useEffect(() => {
     if (isPlaying) {
       const timer = setTimeout(() => {
@@ -290,7 +438,7 @@ export default function ScenarioSimulationPage({ params }: { params: { id: strin
   }
 
   const handleNextStep = () => {
-    if (currentStep < scenario.steps.length - 1) {
+    if (scenarioData && currentStep < scenarioData.steps.length - 1) {
       setCurrentStep(currentStep + 1)
       setSelectedOption(null)
       setFeedbackVisible(false)
@@ -298,13 +446,13 @@ export default function ScenarioSimulationPage({ params }: { params: { id: strin
       setProgress(0)
       setIsPlaying(true)
     } else {
-      window.location.href = `/scenarios/${params.id}/results`
+      window.location.href = `/scenarios/${id}/results`
     }
   }
 
   const getSelectedOption = () => {
-    if (selectedOption === null) return null
-    return scenario.steps[currentStep].options.find((option) => option.id === selectedOption)
+    if (!scenarioData || selectedOption === null) return null
+    return scenarioData.steps[currentStep].options.find((option) => option.id === selectedOption)
   }
 
   const getFeedbackColor = (type: string) => {
@@ -333,74 +481,96 @@ export default function ScenarioSimulationPage({ params }: { params: { id: strin
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
+
+  if (!scenarioData) {
+    return null
+  }
+
+  const scenario = scenarioData
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <AnimatePresence>
         {showIntro && (
           <motion.div
-            className="fixed inset-0 z-50 bg-gray-900 flex flex-col items-center justify-center p-4 md:p-8"
+            className="fixed inset-0 z-50 bg-gray-900 flex flex-col items-center justify-center p-4 md:p-8 overflow-y-auto"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
             <motion.div
-              className="max-w-2xl w-full space-y-6 text-center bg-white/5 p-6 md:p-8 rounded-xl backdrop-blur-sm"
+              className="max-w-2xl w-full space-y-4 text-center bg-white/5 p-4 md:p-6 rounded-xl backdrop-blur-sm my-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <Shield className="h-16 w-16 text-primary mx-auto mb-4" />
-              <h1 className="text-2xl md:text-3xl font-bold mb-2">{scenario.title}</h1>
-              <p className="text-base md:text-lg text-gray-300 mb-4">{scenario.description}</p>
+              <Shield className="h-12 w-12 text-primary mx-auto mb-2" />
+              <h1 className="text-xl md:text-2xl font-bold mb-1">{scenario.title}</h1>
+              <p className="text-sm md:text-base text-gray-300 mb-3">{scenario.description}</p>
 
-              <div className="flex justify-center gap-4 md:gap-6 mb-6 flex-wrap">
+              <div className="flex justify-center gap-3 md:gap-4 mb-4 flex-wrap">
                 <div className="flex flex-col items-center">
-                  <Clock className="h-5 w-5 md:h-6 md:w-6 text-gray-400 mb-2" />
-                  <span className="text-xs md:text-sm text-gray-400">Длительность</span>
-                  <span className="font-medium text-sm md:text-base">{scenario.duration}</span>
+                  <Clock className="h-4 w-4 md:h-5 md:w-5 text-gray-400 mb-1" />
+                  <span className="text-xs text-gray-400">Длительность</span>
+                  <span className="font-medium text-xs md:text-sm">{scenario.duration}</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <Users className="h-5 w-5 md:h-6 md:w-6 text-gray-400 mb-2" />
-                  <span className="text-xs md:text-sm text-gray-400">Участники</span>
-                  <span className="font-medium text-sm md:text-base">{scenario.players}</span>
+                  <Goal className="h-4 w-4 md:h-5 md:w-5 text-gray-400 mb-1" />
+                  <span className="text-xs text-gray-400">Баллы:</span>
+                  <span className="font-medium text-xs md:text-sm">{scenario.points}</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <Shield className="h-5 w-5 md:h-6 md:w-6 text-gray-400 mb-2" />
-                  <span className="text-xs md:text-sm text-gray-400">Сложность</span>
-                  <span className="font-medium text-sm md:text-base">Сложный</span>
+                  <Shield className="h-4 w-4 md:h-5 md:w-5 text-gray-400 mb-1" />
+                  <span className="text-xs text-gray-400">Сложность</span>
+                  <span className="font-medium text-xs md:text-sm">
+                    {scenario.difficulty === "easy" && "Легкий"}
+                    {scenario.difficulty === "medium" && "Средний"}
+                    {scenario.difficulty === "hard" && "Сложный"}
+                    {scenario.difficulty === "extreme" && "Экстремальный"}
+                  </span>
                 </div>
               </div>
 
-              <div className="bg-gray-800/70 rounded-lg p-4 md:p-6 mb-6">
-                <h2 className="text-lg md:text-xl font-medium mb-4">Цели миссии:</h2>
-                <ul className="space-y-2 text-left">
-                  {scenario.objectives.map((objective, index) => (
+              <div className="bg-gray-800/70 rounded-lg p-3 md:p-4 mb-4">
+                <h2 className="text-base md:text-lg font-medium mb-2">Цели миссии:</h2>
+                <ul className="space-y-1.5 text-left">
+                  {scenario.objectives.map((objective: string, index: number) => (
                     <li key={index} className="flex items-start gap-2">
-                      <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                      <span className="w-5 h-5 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0 text-xs">
                         {index + 1}
                       </span>
-                      <span className="text-sm md:text-base">{objective}</span>
+                      <span className="text-xs md:text-sm">{objective}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="bg-gray-800/70 rounded-lg p-4 md:p-6 mb-8">
-                <h2 className="text-lg md:text-xl font-medium mb-4">Ваша команда:</h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {scenario.team.map((member) => (
-                    <div key={member.id} className="flex flex-col items-center">
-                      <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden mb-2">
-                        <Image
-                          src={member.avatar || "/placeholder.svg"}
-                          alt={member.name}
-                          fill
-                          className="object-cover"
-                        />
+              <div className="bg-gray-800/70 rounded-lg p-3 md:p-4 mb-6 max-h-[300px] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+                <h2 className="text-base md:text-lg font-medium mb-2 sticky top-0 bg-gray-800/70 py-1">Материалы для этого сценария:</h2>
+                <div className="space-y-2">
+                  {scenario.legalCodes.map((code: LegalCode) => (
+                    <a 
+                      key={code.id}
+                      href={code.link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-start gap-2 p-2 rounded-lg hover:bg-gray-700/50 transition-colors"
+                    >
+                      <div className="w-5 h-5 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0 text-xs">
+                        {code.id}
                       </div>
-                      <div className="text-sm font-medium">{member.name}</div>
-                      <div className="text-xs text-gray-400">{member.role}</div>
-                    </div>
+                      <div>
+                        <div className="text-sm font-medium">{code.title}</div>
+                        <div className="text-xs text-gray-400">{code.article}</div>
+                      </div>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -420,7 +590,7 @@ export default function ScenarioSimulationPage({ params }: { params: { id: strin
       <div className="relative h-screen flex flex-col">
         <div className="bg-gray-900 p-3 md:p-4 flex items-center justify-between border-b border-gray-800">
           <Link
-            href={`/scenarios/${params.id}`}
+            href={`/scenarios/${id}`}
             className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -536,7 +706,7 @@ export default function ScenarioSimulationPage({ params }: { params: { id: strin
                   <h2 className="text-xl font-medium mb-4">Выберите действие:</h2>
 
                   <div className="space-y-3 mb-6">
-                    {scenario.steps[currentStep].options.map((option) => (
+                    {scenario.steps[currentStep].options.map((option: ScenarioOption) => (
                       <button
                         key={option.id}
                         className={`w-full text-left p-4 rounded-lg border transition-colors ${
@@ -612,20 +782,20 @@ export default function ScenarioSimulationPage({ params }: { params: { id: strin
                 </div>
 
                 <div className="p-4 h-[calc(100%-60px)] flex flex-col">
-                  <div className="flex-grow overflow-y-auto space-y-4 mb-4">
-                    {scenario.team.map((member) => (
-                      <div key={member.id} className="flex items-start gap-2">
+                  <div className="flex-grow overflow-y-auto space-y-4 mb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+                    {scenario.legalCodes.map((code: LegalCode) => (
+                      <div key={code.id} className="flex items-start gap-2">
                         <div className="relative w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                           <Image
-                            src={member.avatar || "/placeholder.svg"}
-                            alt={member.name}
+                            src="/placeholder.svg"
+                            alt={code.title}
                             fill
                             className="object-cover"
                           />
                         </div>
                         <div className="bg-gray-800 rounded-lg p-2 text-sm">
-                          <div className="font-medium text-xs text-gray-400 mb-1">{member.name}</div>
-                          <p>Готов выполнять свои обязанности. Жду указаний.</p>
+                          <div className="font-medium text-xs text-gray-400 mb-1">{code.title}</div>
+                          <p>{code.description}</p>
                         </div>
                       </div>
                     ))}
