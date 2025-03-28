@@ -12,7 +12,7 @@ export default function ModulesSection() {
       title: "Сценарные симуляции",
       description: "Реалистичные сценарии для отработки действий в различных ситуациях",
       icon: Shield,
-      image: "/2.1.svg?height=400&width=600&text=Сценарные+симуляции",
+      image: "main/images/2.1.svg?height=400&width=600&text=Сценарные+симуляции",
       features: [
         "Более 50 реалистичных сценариев",
         "Настраиваемые параметры сложности",
@@ -24,7 +24,7 @@ export default function ModulesSection() {
       title: "Анализ действий",
       description: "Детальный разбор и оценка действий с рекомендациями по улучшению",
       icon: BarChart,
-      image: "/2.2.svg?height=400&width=600&text=Анализ+действий",
+      image: "main/images/2.2.svg?height=400&width=600&text=Анализ+действий",
       features: [
         "Запись и воспроизведение действий",
         "Автоматическая оценка эффективности",
@@ -36,7 +36,7 @@ export default function ModulesSection() {
       title: "Командная работа",
       description: "Многопользовательский режим для отработки взаимодействия в команде",
       icon: Users,
-      image: "/2.3.svg?height=400&width=600&text=Командная+работа",
+      image: "main/images/2.3.svg?height=400&width=600&text=Командная+работа",
       features: [
         "До 8 участников одновременно",
         "Распределение ролей и обязанностей",
@@ -48,7 +48,7 @@ export default function ModulesSection() {
       title: "VR-тренировки",
       description: "Максимальное погружение с использованием технологий виртуальной реальности",
       icon: Monitor,
-      image: "/2.4.svg?height=400&width=600&text=VR-тренировки",
+      image: "main/images/2.4.svg?height=400&width=600&text=VR-тренировки",
       features: [
         "Поддержка популярных VR-гарнитур",
         "Полное отслеживание движений",
@@ -60,7 +60,7 @@ export default function ModulesSection() {
       title: "Теоретическая база",
       description: "Доступ к справочникам, нормативным актам и учебным материалам",
       icon: BookOpen,
-      image: "/2.5.svg?height=400&width=600&text=Теоретическая+база",
+      image: "main/images/2.5.svg?height=400&width=600&text=Теоретическая+база",
       features: [
         "Обширная библиотека материалов",
         "Интерактивные учебные курсы",

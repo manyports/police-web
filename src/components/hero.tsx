@@ -15,31 +15,31 @@ export default function Hero() {
       title: "Сценарные симуляции",
       description: "Моделирование реальных ситуаций для отработки навыков принятия решений",
       icon: Shield,
-      image: "/1.1.svg?height=600&width=1200&text=Сценарные+симуляции",
+      image: "main/images/1.1.svg?height=600&width=1200&text=Сценарные+симуляции",
     },
     {
       title: "Анализ действий",
       description: "Детальный разбор и оценка действий с рекомендациями по улучшению",
       icon: BarChart,
-      image: "/1.2.svg?height=600&width=1200&text=Анализ+действий",
+      image: "main/images/1.2.svg?height=600&width=1200&text=Анализ+действий",
     },
     {
       title: "Командная работа",
       description: "Многопользовательский режим для отработки взаимодействия в команде",
       icon: Users,
-      image: "/1.3.svg?height=600&width=1200&text=Командная+работа",
+      image: "main/images/1.3.svg?height=600&width=1200&text=Командная+работа",
     },
     {
       title: "VR-тренировки",
       description: "Максимальное погружение с использованием технологий виртуальной реальности",
       icon: Monitor,
-      image: "/1.4.svg?height=600&width=1200&text=VR-тренировки",
+      image: "main/images/1.4.svg?height=600&width=1200&text=VR-тренировки",
     },
     {
       title: "Теоретическая база",
       description: "Доступ к справочникам, нормативным актам и учебным материалам",
       icon: BookOpen,
-      image: "/1.5.svg?height=600&width=1200&text=Теоретическая+база",
+      image: "main/images/1.5.svg?height=600&width=1200&text=Теоретическая+база",
     },
   ]
 

@@ -135,7 +135,7 @@ export default function About() {
                 <Image width={128} height={128} src="/placeholder.svg?height=128&width=128&text=Фото" alt="Team member" className="object-cover w-full h-full" />
               </div>
               <h3 className="font-bold mb-1">Базарбаев Ерасыл</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Участник команды 24</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Developer</p>
             </motion.div>
             <motion.div
               variants={item}
@@ -145,7 +145,7 @@ export default function About() {
                 <Image width={128} height={128} src="/placeholder.svg?height=128&width=128&text=Фото" alt="Team member" className="object-cover w-full h-full" />
               </div>
               <h3 className="font-bold mb-1">Сериков Айжас</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Участник команды 24</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Developer</p>
             </motion.div>
             <motion.div
               variants={item}
@@ -155,7 +155,7 @@ export default function About() {
                 <Image width={128} height={128} src="/placeholder.svg?height=128&width=128&text=Фото" alt="Team member" className="object-cover w-full h-full" />
               </div>
               <h3 className="font-bold mb-1">Толбаев Алинур</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Участник команды 24</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Team-Lead | Creativity Director</p>
             </motion.div>
             <motion.div
               variants={item}
@@ -165,7 +165,7 @@ export default function About() {
                 <Image width={128} height={128} src="/placeholder.svg?height=128&width=128&text=Фото" alt="Team member" className="object-cover w-full h-full" />
               </div>    
               <h3 className="font-bold mb-1">Жорабек Алимжан</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Участник команды 24</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Designer</p>
             </motion.div>
           </motion.div>
         </motion.div>

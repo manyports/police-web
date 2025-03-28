@@ -96,6 +96,7 @@ export default function ScenariosPage() {
       tags: ["Улики", "Анализ", "Криминалистика"],
       isNew: true,
       isPopular: false,
+      scenarioId: "scenario-4",
     },
     {
       id: 5,
@@ -112,6 +113,7 @@ export default function ScenariosPage() {
       tags: ["Кибербезопасность", "Технологии", "Расследование"],
       isNew: true,
       isPopular: false,
+      scenarioId: "scenario-5",
     },
     {
       id: 6,
@@ -128,6 +130,7 @@ export default function ScenariosPage() {
       tags: ["Штурм", "Спецоперация", "Командная работа"],
       isNew: false,
       isPopular: true,
+      scenarioId: "scenario-6",
     },
     {
       id: 7,
@@ -144,6 +147,7 @@ export default function ScenariosPage() {
       tags: ["ДТП", "Первая помощь", "Документирование"],
       isNew: false,
       isPopular: false,
+      scenarioId: "scenario-7",
     },
   ]
 

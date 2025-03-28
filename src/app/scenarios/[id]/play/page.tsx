@@ -5,6 +5,10 @@ import { useParams, useRouter } from "next/navigation";
 import { firstScenario } from "@/data/first-scenario";
 import { secondScenario } from "@/data/second-scenario";
 import { thirdScenario } from "@/data/third-scenario";
+import { fourthScenario } from "@/data/fourth-scenario";
+import { fifthScenario } from "@/data/fifth-scenario";
+import { sixthScenario } from "@/data/sixth-scenario";
+import { seventhScenario } from "@/data/seventh-scenario";
 import { ScenarioProvider, useScenario } from "@/contexts/ScenarioContext";
 import SceneCard from "@/components/scenario/SceneCard";
 import ProgressIndicator from "@/components/scenario/ProgressIndicator";
@@ -36,6 +40,14 @@ const ScenarioPlayer = () => {
       setScenario(secondScenario);
     } else if (scenarioId === "scenario-3") {
       setScenario(thirdScenario);
+    } else if (scenarioId === "scenario-4") {
+      setScenario(fourthScenario);
+    } else if (scenarioId === "scenario-5") {
+      setScenario(fifthScenario);
+    } else if (scenarioId === "scenario-6") {
+      setScenario(sixthScenario);
+    } else if (scenarioId === "scenario-7") {
+      setScenario(seventhScenario);
     } else {
       setScenario(firstScenario);
     }
