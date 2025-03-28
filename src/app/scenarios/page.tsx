@@ -20,7 +20,6 @@ export default function ScenariosPage() {
     { id: "hostage", name: "Заложники" },
     { id: "investigation", name: "Расследования" },
     { id: "cyber", name: "Киберпреступления" },
-    { id: "tactical", name: "Тактические" },
   ]
 
   const filters = [
