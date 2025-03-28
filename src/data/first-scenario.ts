@@ -1,6 +1,6 @@
 import { ScenarioData } from "../types/scenario";
 
-export const mockScenario: ScenarioData = {
+export const firstScenario: ScenarioData = {
   id: "scenario-1",
   title: "Обеспечение общественной безопасности",
   description: "Проверьте свои навыки в ситуациях, связанных с общественной безопасностью",

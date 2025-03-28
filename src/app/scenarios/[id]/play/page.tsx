@@ -2,7 +2,9 @@
 
 import React, { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { mockScenario } from "@/data/mock-scenario";
+import { firstScenario } from "@/data/first-scenario";
+import { secondScenario } from "@/data/second-scenario";
+import { thirdScenario } from "@/data/third-scenario";
 import { ScenarioProvider, useScenario } from "@/contexts/ScenarioContext";
 import SceneCard from "@/components/scenario/SceneCard";
 import ProgressIndicator from "@/components/scenario/ProgressIndicator";
@@ -27,10 +29,16 @@ const ScenarioPlayer = () => {
   } = useScenario();
 
   useEffect(() => {
-    // In a real app, you would fetch the scenario from an API
-    // using the scenario ID from the URL params
-    // For now, we'll use the mock data
-    setScenario(mockScenario);
+    // Load the appropriate scenario based on the scenario ID
+    if (scenarioId === "scenario-1") {
+      setScenario(firstScenario);
+    } else if (scenarioId === "scenario-2") {
+      setScenario(secondScenario);
+    } else if (scenarioId === "scenario-3") {
+      setScenario(thirdScenario);
+    } else {
+      setScenario(firstScenario);
+    }
   }, [scenarioId, setScenario]);
 
   const currentScene = getCurrentScene();

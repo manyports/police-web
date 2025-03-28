@@ -2,7 +2,9 @@
 
 import React, { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { mockScenario } from "@/data/mock-scenario";
+import { firstScenario } from "@/data/first-scenario";
+import { secondScenario } from "@/data/second-scenario";
+import { thirdScenario } from "@/data/third-scenario";
 import { ScenarioProvider, useScenario } from "@/contexts/ScenarioContext";
 import ResultsCard from "@/components/scenario/ResultsCard";
 
@@ -27,7 +29,7 @@ const ScenarioResults = () => {
     
     // For now, we'll redirect to the play page if no results are available
     if (!isCompleted && !scenarioResult) {
-      setScenario(mockScenario);
+      setScenario(firstScenario);
       router.push(`/scenarios/${scenarioId}/play`);
     }
   }, [scenarioId, isCompleted, scenarioResult, router, setScenario]);

@@ -42,28 +42,47 @@ export default function ScenariosPage() {
       image: "/placeholder.svg?height=400&width=600&text=Патрулирование",
       description:
         "Экзаменационный сценарий на знание статьи 131 УПК РК. Игрок выступает в роли сотрудника полиции, который должен провести законное процессуальное задержание. Каждое действие влияет на общий балл за экзамен.",
-      tags: ["Ночь", "Город", "Патруль"],
+      tags: ["Патрулирование", "Задержание"],
       isNew: false,
       isPopular: true,
+      scenarioId: "scenario-1",
     },
     {
       id: 2,
-      title: "Захват заложников в банке",
+      title: "Расследование киберпреступления",
+      category: "cyber",
+      difficulty: "medium",
+      duration: "35-45 мин",
+      points: 70,
+      rating: 4.7,
+      reviews: 56,
+      image: "/placeholder.svg?height=400&width=600&text=Дорожная+полиция",
+      description:
+        "Сценарий проверяет ваши навыки работы в дорожной полиции. Решайте ситуации с нарушителями ПДД, регулируйте движение и обеспечивайте безопасность на дорогах.",
+      tags: ["Следствие", "Киберпреступления"],
+      isNew: true,
+      isPopular: false,
+      scenarioId: "scenario-2",
+    },
+    {
+      id: 3,
+      title: "Действия сотрудников полиции при захвате заложников",
       category: "hostage",
       difficulty: "hard",
       duration: "45-60 мин",
-      points: 350,
+      points: 100,
       rating: 4.9,
       reviews: 87,
       image: "/placeholder.svg?height=400&width=600&text=Заложники",
       description:
         "Сложная ситуация с захватом заложников в банке. Тренировка навыков ведения переговоров, тактического планирования и координации действий группы.",
-      tags: ["Заложники", "Переговоры", "Тактика"],
+      tags: ["Заложники", "Антитеррористические"],
       isNew: false,
       isPopular: true,
+      scenarioId: "scenario-3",
     },
     {
-      id: 3,
+      id: 4,
       title: "Расследование места преступления",
       category: "investigation",
       difficulty: "medium",
@@ -79,7 +98,7 @@ export default function ScenariosPage() {
       isPopular: false,
     },
     {
-      id: 4,
+      id: 5,
       title: "Кибератака на инфраструктуру",
       category: "cyber",
       difficulty: "hard",
@@ -95,7 +114,7 @@ export default function ScenariosPage() {
       isPopular: false,
     },
     {
-      id: 5,
+      id: 6,
       title: "Штурм здания с террористами",
       category: "investigation",
       difficulty: "extreme",
@@ -111,7 +130,7 @@ export default function ScenariosPage() {
       isPopular: true,
     },
     {
-      id: 6,
+      id: 7,
       title: "Дорожно-транспортное происшествие",
       category: "patrol",
       difficulty: "easy",
@@ -402,13 +421,13 @@ export default function ScenariosPage() {
                     </div>
                     <div className="border-t border-gray-200 p-4 flex justify-between flex-wrap gap-2">
                       <Button variant="outline" size="sm" asChild>
-                        <Link href={`/scenarios/${scenario.id}`} className="flex items-center gap-2">
+                        <Link href={`/scenarios/${scenario.scenarioId || scenario.id}`} className="flex items-center gap-2">
                           <Info className="h-4 w-4" />
                           Подробнее
                         </Link>
                       </Button>
                       <Button size="sm" asChild>
-                        <Link href={`/scenarios/${scenario.id}/start`} className="flex items-center gap-2">
+                        <Link href={`/scenarios/${scenario.scenarioId || scenario.id}/start`} className="flex items-center gap-2">
                           <Zap className="h-4 w-4" />
                           Начать
                         </Link>
