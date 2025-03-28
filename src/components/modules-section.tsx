@@ -12,7 +12,7 @@ export default function ModulesSection() {
       title: "Сценарные симуляции",
       description: "Реалистичные сценарии для отработки действий в различных ситуациях",
       icon: Shield,
-      image: "/placeholder.svg?height=400&width=600&text=Сценарные+симуляции",
+      image: "/simulation-main.svg?height=400&width=600&text=Сценарные+симуляции",
       features: [
         "Более 50 реалистичных сценариев",
         "Настраиваемые параметры сложности",

@@ -15,7 +15,7 @@ export default function Hero() {
       title: "Сценарные симуляции",
       description: "Моделирование реальных ситуаций для отработки навыков принятия решений",
       icon: Shield,
-      image: "/placeholder.svg?height=600&width=1200&text=Сценарные+симуляции",
+      image: "/simulation-main.svg?height=600&width=1200&text=Сценарные+симуляции",
     },
     {
       title: "Анализ действий",
