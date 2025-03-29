@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
@@ -12,7 +12,8 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, Check, Shield, LogIn } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
-const LoginPage: React.FC = () => {
+// Login form component that uses useSearchParams
+const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, error, loading, clearError } = useAuth();
@@ -193,6 +194,28 @@ const LoginPage: React.FC = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+// Loading fallback component
+const LoginPageLoading = () => {
+  return (
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md mx-auto text-center">
+        <Shield className="h-12 w-12 text-primary mx-auto mb-4" />
+        <h1 className="text-2xl font-bold mb-2">Загрузка...</h1>
+        <p className="text-muted-foreground">Пожалуйста, подождите</p>
+      </div>
+    </div>
+  );
+};
+
+// Main login page component with Suspense
+const LoginPage: React.FC = () => {
+  return (
+    <Suspense fallback={<LoginPageLoading />}>
+      <LoginForm />
+    </Suspense>
   );
 };
 
