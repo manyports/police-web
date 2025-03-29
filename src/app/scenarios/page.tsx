@@ -9,21 +9,87 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Scenario } from "@/types/scenario"
+import { v4 as uuidv4 } from 'uuid'
 
 export default function ScenariosPage() {
   const [activeCategory, setActiveCategory] = useState("all")
   const [activeFilter, setActiveFilter] = useState("all")
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [scenarios, setScenarios] = useState<Scenario[]>([])
-
+  
   useEffect(() => {
+    // Fetch regular scenarios
     fetch('/data/scenarios.json')
       .then(response => response.json())
-      .then(data => setScenarios(data.scenarios))
+      .then(data => {
+        let allScenarios = [...data.scenarios];
+        
+        // Load user-created scenarios from localStorage
+        try {
+          const savedScenariosJson = localStorage.getItem('savedScenarios');
+          if (savedScenariosJson) {
+            const userScenarios = JSON.parse(savedScenariosJson);
+            
+            // Transform user scenarios to match Scenario interface
+            const formattedUserScenarios = userScenarios.map((userScenario: any) => {
+              // Generate random tags based on scene content
+              const tags = [];
+              if (userScenario.scenes.length > 0) {
+                tags.push("Пользовательский");
+                if (userScenario.scenes.length > 3) {
+                  tags.push("Многоуровневый");
+                }
+                if (userScenario.title.toLowerCase().includes("расследование")) {
+                  tags.push("Расследование");
+                }
+              }
+              
+              // Get the first scene image or use placeholder
+              const image = userScenario.previewImageUrl || 
+                (userScenario.scenes[0]?.imageUrl || '/images/scenario-placeholder.svg');
+              
+              // Calculate estimated points based on scenes/options
+              const pointsEstimate = userScenario.scenes.reduce((total: number, scene: any) => {
+                const scenePoints = scene.options ? scene.options.reduce((sum: number, option: any) => 
+                  sum + (option.score || 0), 0) : 0;
+                return total + scenePoints;
+              }, 0);
+              
+              return {
+                id: userScenario.id,
+                title: userScenario.title,
+                description: userScenario.description || "Пользовательский сценарий",
+                category: "custom",
+                difficulty: "medium",
+                duration: `${userScenario.scenes.length * 5} мин`,
+                rating: 5,
+                reviews: 1,
+                image: image,
+                tags: tags,
+                isNew: true,
+                isPopular: false,
+                objectives: ["Пройти пользовательский сценарий"],
+                steps: [],
+                legalCodes: [],
+                points: pointsEstimate.toString(),
+                scenarioId: userScenario.id
+              };
+            });
+            
+            // Add user scenarios to all scenarios
+            allScenarios = [...allScenarios, ...formattedUserScenarios];
+          }
+        } catch (error) {
+          console.error("Error loading user scenarios:", error);
+        }
+        
+        setScenarios(allScenarios);
+      })
   }, [])
 
   const categories = [
     { id: "all", name: "Все сценарии" },
+    { id: "custom", name: "Мои сценарии" },
     { id: "patrol", name: "Патрулирование" },
     { id: "hostage", name: "Заложники" },
     { id: "investigation", name: "Расследования" },
@@ -115,7 +181,7 @@ export default function ScenariosPage() {
               </p>
             </div>
             <Button asChild>
-              <Link href="/scenarios/create">Создать сценарий</Link>
+              <Link href="/scenario-editor">Создать сценарий</Link>
             </Button>
           </div>
         
@@ -247,7 +313,7 @@ export default function ScenariosPage() {
                   <motion.div
                     key={scenario.id}
                     variants={item}
-                    className="border border-gray-200 rounded-xl overflow-hidden hover:border-primary/50 hover:shadow-md transition-all bg-white"
+                    className="border border-gray-200 rounded-xl overflow-hidden hover:border-primary/50 hover:shadow-md transition-all bg-white flex flex-col"
                   >
                     <div className="relative aspect-video">
                       <Image
@@ -255,6 +321,11 @@ export default function ScenariosPage() {
                         alt={scenario.title}
                         fill
                         className="object-cover"
+                        onError={(e) => {
+                          // When the image fails to load, replace it with a placeholder
+                          const target = e.target as HTMLImageElement;
+                          target.src = "/placeholder.svg";
+                        }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
                         <div className="p-4 text-white">
@@ -283,8 +354,8 @@ export default function ScenariosPage() {
                         </Button>
                       </div>
                     </div>
-                    <div className="p-4">
-                      <p className="text-muted-foreground text-sm mb-4 line-clamp-4">{scenario.description}</p>
+                    <div className="p-4 flex-grow flex flex-col">
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-3 overflow-hidden">{scenario.description}</p>
                       <div className="flex flex-wrap gap-2 mb-4">
                         {scenario.tags.map((tag) => (
                           <Badge key={tag} variant="secondary" className="bg-blue-50 text-primary">
@@ -292,7 +363,7 @@ export default function ScenariosPage() {
                           </Badge>
                         ))}
                       </div>
-                      <div className="flex items-center justify-between flex-wrap gap-2">
+                      <div className="flex items-center justify-between flex-wrap gap-2 mt-auto">
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                           <div className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />
@@ -310,19 +381,25 @@ export default function ScenariosPage() {
                         </div>
                       </div>
                     </div>
-                    <div className="border-t border-gray-200 p-4 flex justify-between flex-wrap gap-2">
-                      <Button variant="outline" size="sm" asChild>
-                        <Link href={`/scenarios/${scenario.scenarioId || scenario.id}`} className="flex items-center gap-2">
-                          <Info className="h-4 w-4" />
-                          Подробнее
-                        </Link>
-                      </Button>
-                      <Button size="sm" asChild>
-                        <Link href={`/scenarios/${scenario.scenarioId || scenario.id}/start`} className="flex items-center gap-2">
-                          <Zap className="h-4 w-4" />
-                          Начать
-                        </Link>
-                      </Button>
+                    <div className="border-t border-gray-200 p-4">
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="flex justify-start">
+                          <Button variant="outline" size="sm" asChild style={{ width: '130px' }}>
+                            <Link href={`/scenarios/${scenario.scenarioId || scenario.id}`} className="flex items-center justify-center gap-2">
+                              <Info className="h-4 w-4 flex-shrink-0" />
+                              <span>Подробнее</span>
+                            </Link>
+                          </Button>
+                        </div>
+                        <div className="flex justify-end">
+                          <Button size="sm" asChild style={{ width: '130px' }}>
+                            <Link href={`/scenarios/${scenario.scenarioId || scenario.id}/play`} className="flex items-center justify-center gap-2">
+                              <Zap className="h-4 w-4 flex-shrink-0" />
+                              <span>Начать</span>
+                            </Link>
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </motion.div>
                 ))}

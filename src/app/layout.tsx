@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ScenarioProvider } from "@/contexts/ScenarioContext";
@@ -19,7 +19,12 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "PoliceTrain - Интерактивная тренировочная платформа",
   description: "Виртуальная платформа для подготовки полицейских к различным ситуациям",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({

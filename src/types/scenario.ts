@@ -24,7 +24,7 @@ export interface LegalCode {
 }
 
 export interface Scenario {
-  id: number
+  id: string
   title: string
   category: string
   difficulty: string
@@ -63,6 +63,7 @@ export type ScenarioData = {
   id: string;
   title: string;
   description: string;
+  previewImageUrl?: string;
   scenes: Scene[];
 };
 
