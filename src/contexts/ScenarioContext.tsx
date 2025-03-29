@@ -80,26 +80,21 @@ export const ScenarioProvider: React.FC<ScenarioProviderProps> = ({ children }) 
       const mistakes: ScenarioResult["mistakes"] = [];
 
       scenario.scenes.forEach(scene => {
-        // Найти все правильные варианты ответов для этой сцены
         const correctOptions = scene.options.filter(option => option.isCorrect);
         
-        // Найти вариант с максимальным количеством баллов для расчета максимально возможного результата
         const bestOption = scene.options.reduce((best, current) => {
           return (best.score > current.score) ? best : current;
         }, scene.options[0]);
         
         maxPossibleScore += bestOption.score;
 
-        // Рассчитываем баллы пользователя
         const userOptionId = userAnswers[scene.id];
         if (userOptionId) {
           const selectedOption = scene.options.find(option => option.id === userOptionId);
           if (selectedOption) {
             totalScore += selectedOption.score;
 
-            // Проверяем, является ли это ошибкой (если выбран неправильный вариант)
             if (!selectedOption.isCorrect && correctOptions.length > 0) {
-              // Получаем первый правильный вариант для отображения в списке ошибок
               const correctOption = correctOptions[0];
               
               mistakes.push({
@@ -114,7 +109,6 @@ export const ScenarioProvider: React.FC<ScenarioProviderProps> = ({ children }) 
         }
       });
 
-      // Generate recommendations based on mistakes
       const recommendations: string[] = [];
       
       if (mistakes.length > 0) {
@@ -137,7 +131,6 @@ export const ScenarioProvider: React.FC<ScenarioProviderProps> = ({ children }) 
       });
     } catch (error) {
       console.error("Error calculating results:", error);
-      // Устанавливаем базовый результат в случае ошибки
       setScenarioResult({
         totalScore: 0,
         maxPossibleScore: 0,

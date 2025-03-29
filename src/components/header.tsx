@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from "react"
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
-import { Search, Menu, X, Shield, User, Bell } from "lucide-react"
+import { Search, Menu, X, Shield, User, Bell, LogOut } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
+import { useAuth } from "@/contexts/AuthContext"
 
 export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -14,6 +15,7 @@ export default function Header() {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
 
+  const { user, logout } = useAuth()
   const router = useRouter()
   const { scrollY } = useScroll()
   const headerBg = useTransform(scrollY, [0, 50], ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"])
@@ -40,6 +42,14 @@ export default function Header() {
       document.body.style.overflow = ''
     }
   }, [isMobileMenuOpen])
+
+  const handleAuthAction = () => {
+    if (user) {
+      logout();
+    } else {
+      router.push("/login");
+    }
+  };
 
   const navItems = [
     { name: "Главная", href: "/" },
@@ -144,11 +154,25 @@ export default function Header() {
               </AnimatePresence>
             </div>
 
-            <Button className="relative h-8 w-8 sm:h-9 sm:w-9" variant="ghost" size="icon" onClick={() => router.push("/profile")}>
+            <Button 
+              className="relative h-8 w-8 sm:h-9 sm:w-9" 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => router.push("/profile")}
+            >
               <User className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
 
-            <Button className="text-xs h-8 sm:h-9 px-3 sm:px-4" onClick={() => router.push("/login")}>Войти</Button>
+            <Button 
+              className="text-xs h-8 sm:h-9 px-3 sm:px-4" 
+              onClick={handleAuthAction}
+            >
+              {user ? (
+                <>
+                  <LogOut className="h-4 w-4 mr-1" /> Выйти
+                </>
+              ) : 'Войти'}
+            </Button>
           </div>
 
           <button
@@ -189,12 +213,31 @@ export default function Header() {
                   Уведомления
                 </Button>
 
-                <Button variant="outline" className="w-full justify-start text-xs sm:text-sm h-10 sm:h-11" onClick={() => router.push("/profile")}>
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start text-xs sm:text-sm h-10 sm:h-11" 
+                  onClick={() => {
+                    router.push("/profile");
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
                   <User className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                   Профиль
                 </Button>
 
-                <Button className="w-full text-xs sm:text-sm h-10 sm:h-11" onClick={() => router.push("/login")}>Войти</Button>
+                <Button 
+                  className="w-full text-xs sm:text-sm h-10 sm:h-11" 
+                  onClick={() => {
+                    handleAuthAction();
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  {user ? (
+                    <>
+                      <LogOut className="h-4 w-4 mr-2" /> Выйти
+                    </>
+                  ) : 'Войти'}
+                </Button>
               </div>
             </div>
           </motion.div>
