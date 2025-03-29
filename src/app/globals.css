@@ -77,6 +77,50 @@
   body {
     @apply bg-background text-foreground;
   }
+  html {
+    font-size: 14px;
+  }
+  @screen sm {
+    html {
+      font-size: 15px;
+    }
+  }
+  @screen md {
+    html {
+      font-size: 16px;
+    }
+  }
+}
+
+/* Mobile-first responsive utilities */
+@layer utilities {
+  .container-responsive {
+    @apply w-[95%] sm:w-[90%] md:w-[85%] lg:w-[80%] mx-auto;
+  }
+  
+  .text-responsive {
+    @apply text-sm sm:text-base;
+  }
+  
+  .title-responsive {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+  }
+  
+  .subtitle-responsive {
+    @apply text-lg sm:text-xl md:text-2xl;
+  }
+  
+  .padding-responsive {
+    @apply py-4 px-4 sm:py-6 sm:px-6 md:py-8 md:px-8 lg:py-10 lg:px-10;
+  }
+  
+  .margin-responsive {
+    @apply my-4 sm:my-6 md:my-8 lg:my-10;
+  }
+  
+  .gap-responsive {
+    @apply gap-3 sm:gap-4 md:gap-6 lg:gap-8;
+  }
 }
 
 /* Стили для чекбоксов */

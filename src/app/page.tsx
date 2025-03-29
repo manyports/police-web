@@ -9,7 +9,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       <main className="flex-grow">
         <Hero />
-        <div className="mx-auto w-[90%] md:w-[80%] max-w-7xl space-y-16 md:space-y-24 py-8 md:py-16">
+        <div className="mx-auto w-[95%] sm:w-[90%] md:w-[85%] lg:w-[80%] max-w-7xl space-y-8 sm:space-y-12 md:space-y-16 lg:space-y-24 py-6 sm:py-8 md:py-12 lg:py-16">
           <ModulesSection />
           <FeaturesSection />
           <StatsSection />
