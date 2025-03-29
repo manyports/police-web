@@ -23,7 +23,6 @@ const LoginForm = () => {
   const registered = searchParams.get('registered');
   const callbackUrl = searchParams.get('callbackUrl');
   
-  // Clear error when component unmounts or inputs change
   useEffect(() => {
     return () => {
       clearError();
@@ -75,7 +74,6 @@ const LoginForm = () => {
             </div>
           </div>
           
-          {/* Right side with login form */}
           <div className="w-full lg:w-1/2">
             <Card className="w-full shadow-lg border-0 bg-card">
               <CardHeader className="space-y-1 pb-2">
@@ -197,7 +195,6 @@ const LoginForm = () => {
   );
 };
 
-// Loading fallback component
 const LoginPageLoading = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -210,7 +207,6 @@ const LoginPageLoading = () => {
   );
 };
 
-// Main login page component with Suspense
 const LoginPage: React.FC = () => {
   return (
     <Suspense fallback={<LoginPageLoading />}>
