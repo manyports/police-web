@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { Scene } from "@/types/scenario";
 
 interface SceneCardProps {
@@ -15,43 +14,95 @@ const SceneCard: React.FC<SceneCardProps> = ({
   onOptionSelect,
   onNext,
 }) => {
+  // Функция для проверки валидности URL
+  const isValidUrl = (urlString: string): boolean => {
+    if (!urlString) return false;
+    
+    // Проверяем, что URL начинается с http или https
+    if (urlString.startsWith('http://') || urlString.startsWith('https://')) {
+      try {
+        new URL(urlString);
+        return true;
+      } catch (e) {
+        console.error("Invalid URL:", urlString, e);
+        return false;
+      }
+    }
+    
+    return false;
+  };
+
+  // Константа для заглушки
+  const PLACEHOLDER_IMAGE = '/images/scenario-placeholder.svg';
+
+  // Безопасная обработка изображения
+  const renderImage = () => {
+    if (!scene.imageUrl || scene.imageUrl.trim() === '') {
+      return (
+        <div className="flex items-center justify-center h-full">
+          <img src={PLACEHOLDER_IMAGE} alt="Заглушка изображения" className="w-full h-full object-contain" />
+        </div>
+      );
+    }
+
+    // Для URL, начинающихся с http
+    if (isValidUrl(scene.imageUrl)) {
+      return (
+        <img
+          src={scene.imageUrl}
+          alt={scene.title || "Изображение сцены"}
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            e.currentTarget.onerror = null; // Предотвращает бесконечный цикл
+            e.currentTarget.src = PLACEHOLDER_IMAGE;
+          }}
+        />
+      );
+    }
+
+    // Для локальных изображений из папки public
+    return (
+      <img
+        src={scene.imageUrl.startsWith('/') ? scene.imageUrl : `/${scene.imageUrl}`}
+        alt={scene.title || "Изображение сцены"}
+        className="w-full h-full object-cover"
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = PLACEHOLDER_IMAGE;
+        }}
+      />
+    );
+  };
+
   return (
     <div className="flex flex-col gap-6 p-6 rounded-lg border border-gray-200 shadow-sm">
-      <h2 className="text-2xl font-bold">{scene.title}</h2>
+      <h2 className="text-2xl font-bold">{scene.title || "Без названия"}</h2>
       
       <div className="relative w-full h-[340px] bg-gray-100 rounded-lg overflow-hidden">
-        {scene.imageUrl ? (
-          <Image
-            src={scene.imageUrl}
-            alt={scene.title}
-            layout="fill"
-            objectFit="cover"
-            priority
-          />
-        ) : (
-          <div className="flex items-center justify-center h-full">
-            <p className="text-gray-500">Изображение недоступно</p>
-          </div>
-        )}
+        {renderImage()}
       </div>
       
-      <p className="text-lg">{scene.description}</p>
+      <p className="text-lg">{scene.description || "Описание отсутствует"}</p>
       
       <div className="flex flex-col gap-3 mt-2">
         <h3 className="text-lg font-semibold">Выберите вариант ответа:</h3>
-        {scene.options.map((option) => (
-          <button
-            key={option.id}
-            onClick={() => onOptionSelect(option.id)}
-            className={`p-4 text-left rounded-lg transition-colors ${
-              selectedOptionId === option.id
-                ? "bg-blue-100 border-2 border-blue-500"
-                : "bg-gray-50 border border-gray-200 hover:bg-gray-100"
-            }`}
-          >
-            {option.text}
-          </button>
-        ))}
+        {scene.options && scene.options.length > 0 ? (
+          scene.options.map((option) => (
+            <button
+              key={option.id}
+              onClick={() => onOptionSelect(option.id)}
+              className={`p-4 text-left rounded-lg transition-colors ${
+                selectedOptionId === option.id
+                  ? "bg-blue-100 border-2 border-blue-500"
+                  : "bg-gray-50 border border-gray-200 hover:bg-gray-100"
+              }`}
+            >
+              {option.text || "Вариант без текста"}
+            </button>
+          ))
+        ) : (
+          <p className="text-gray-500">Нет доступных вариантов ответа</p>
+        )}
       </div>
       
       <div className="flex justify-end mt-4">

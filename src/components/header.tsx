@@ -31,7 +31,7 @@ export default function Header() {
   const navItems = [
     { name: "Главная", href: "/" },
     { name: "Сценарии", href: "/scenarios" },
-    { name: "Аналитика", href: "/analytics" },
+    { name: "Мои сценарии", href: "/my-scenarios" },
     { name: "Теория", href: "/theory" },
     { name: "О платформе", href: "/about" },
   ]

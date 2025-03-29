@@ -8,7 +8,32 @@ interface ResultsCardProps {
 }
 
 const ResultsCard: React.FC<ResultsCardProps> = ({ result, onRestart }) => {
-  const scorePercentage = Math.round((result.totalScore / result.maxPossibleScore) * 100);
+  // Убедимся, что у нас есть все необходимые данные
+  if (!result || typeof result.totalScore !== 'number' || typeof result.maxPossibleScore !== 'number') {
+    return (
+      <div className="flex flex-col gap-6 p-6 rounded-lg border border-gray-200 shadow-sm">
+        <h2 className="text-2xl font-bold">Ошибка при загрузке результатов</h2>
+        <p>Не удалось загрузить результаты сценария.</p>
+        <div className="flex justify-between mt-6">
+          <button
+            onClick={onRestart}
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Пройти сценарий заново
+          </button>
+          
+          <Link href="/scenarios" className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+            К списку сценариев
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Безопасный расчет процента
+  const scorePercentage = result.maxPossibleScore > 0 
+    ? Math.round((result.totalScore / result.maxPossibleScore) * 100)
+    : 0;
   
   let resultCategory: { title: string; description: string; className: string } = {
     title: "",
@@ -35,6 +60,10 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ result, onRestart }) => {
       className: "bg-yellow-100 border-yellow-500 text-yellow-800"
     };
   }
+
+  // Убедимся, что массивы mistakes и recommendations существуют
+  const mistakes = Array.isArray(result.mistakes) ? result.mistakes : [];
+  const recommendations = Array.isArray(result.recommendations) ? result.recommendations : [];
 
   return (
     <div className="flex flex-col gap-6 p-6 rounded-lg border border-gray-200 shadow-sm">
@@ -67,25 +96,25 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ result, onRestart }) => {
         </div>
       </div>
       
-      {result.mistakes.length > 0 && (
+      {mistakes.length > 0 && (
         <div className="mt-4">
           <h3 className="text-xl font-semibold mb-3">Допущенные ошибки:</h3>
           <div className="flex flex-col gap-4">
-            {result.mistakes.map((mistake, index) => (
+            {mistakes.map((mistake, index) => (
               <div key={index} className="p-4 bg-red-50 rounded-lg border border-red-200">
-                <h4 className="font-semibold text-lg">Сцена: </h4>{mistake.sceneTitle}
-                <p className="mt-1 text-red-700">{mistake.explanation}</p>
+                <h4 className="font-semibold text-lg">Сцена: {mistake.sceneTitle || 'Неизвестно'}</h4>
+                <p className="mt-1 text-red-700">{mistake.explanation || 'Объяснение недоступно'}</p>
               </div>
             ))}
           </div>
         </div>
       )}
       
-      {result.recommendations.length > 0 && (
+      {recommendations.length > 0 && (
         <div className="mt-4">
           <h3 className="text-xl font-semibold mb-3">Рекомендации:</h3>
           <ul className="list-disc pl-6 space-y-2">
-            {result.recommendations.map((recommendation, index) => (
+            {recommendations.map((recommendation, index) => (
               <li key={index}>{recommendation}</li>
             ))}
           </ul>
