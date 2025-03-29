@@ -40,6 +40,7 @@ export interface Scenario {
   steps: ScenarioStep[]
   legalCodes: LegalCode[]
   points: string
+  scenarioId: string
 }
 
 export type AnswerOption = {
