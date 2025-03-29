@@ -19,7 +19,7 @@ const ScenarioEditor: React.FC = () => {
     previewImageUrl: "",
     scenes: []
   });
-  const [sceneCount, setSceneCount] = useState<number>(1);
+  const [sceneCount, setSceneCount] = useState<number>(0);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   // Load scenario for editing if ID is provided
@@ -253,14 +253,14 @@ const ScenarioEditor: React.FC = () => {
             </span>
           </label>
           
-          <label className="block text-sm font-medium">
+           <label className="block text-sm font-medium">
             Количество сцен:
             <select
               value={sceneCount}
               onChange={handleSceneCountChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
             >
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
                 <option key={num} value={num}>{num}</option>
               ))}
             </select>
