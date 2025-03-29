@@ -178,7 +178,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.setItem('user', JSON.stringify(data.user));
       
       const callbackUrl = new URLSearchParams(window.location.search).get('callbackUrl');
-      router.push(callbackUrl || '/');
+      
+      window.location.href = callbackUrl || '/';
+      return;
     } catch (error) {
       setError('An error occurred during login');
       console.error('Login error:', error);
