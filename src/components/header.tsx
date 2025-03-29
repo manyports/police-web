@@ -56,6 +56,7 @@ export default function Header() {
     { name: "Сценарии", href: "/scenarios" },
     { name: "Мои сценарии", href: "/my-scenarios" },
     { name: "Теория", href: "/theory" },
+    { name: "Интерактивная новелла", href: "/visual-novel" },
     { name: "О платформе", href: "/about" },
   ]
 

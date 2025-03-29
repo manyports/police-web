@@ -49,7 +49,7 @@ export default function About() {
             className="relative h-64 w-full rounded-lg overflow-hidden mb-8"
           >
             <Image
-              src="/placeholder.svg?height=400&width=1200&text=Команда+24" 
+              src="/images/elements/AboutUs.jpg?height=400&width=1200&text=Команда+24" 
               width={1200}
               height={400}
               alt="Наша команда" 
@@ -132,7 +132,7 @@ export default function About() {
               className="flex flex-col items-center text-center"
             >
               <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
-                <Image width={128} height={128} src="/placeholder.svg?height=128&width=128&text=Фото" alt="Team member" className="object-cover w-full h-full" />
+                <Image width={128} height={128} src="/images/elements/Yerassyl.jpg?height=128&width=128&text=Фото" alt="Team member" className="object-cover w-full h-full" />
               </div>
               <h3 className="font-bold mb-1">Базарбаев Ерасыл</h3>
               <p className="text-gray-600 dark:text-gray-400 text-sm">Developer</p>
@@ -142,7 +142,7 @@ export default function About() {
               className="flex flex-col items-center text-center"
             >
               <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
-                <Image width={128} height={128} src="/placeholder.svg?height=128&width=128&text=Фото" alt="Team member" className="object-cover w-full h-full" />
+                <Image width={128} height={128} src="/images/elements/Ayzhas.jpg?height=128&width=128&text=Фото" alt="Team member" className="object-cover w-full h-full" />
               </div>
               <h3 className="font-bold mb-1">Сериков Айжас</h3>
               <p className="text-gray-600 dark:text-gray-400 text-sm">Developer</p>
@@ -152,7 +152,7 @@ export default function About() {
               className="flex flex-col items-center text-center"
             >
               <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
-                <Image width={128} height={128} src="/placeholder.svg?height=128&width=128&text=Фото" alt="Team member" className="object-cover w-full h-full" />
+                <Image width={128} height={128} src="/images/elements/Alinur.jpg?height=128&width=128&text=Фото" alt="Team member" className="object-cover w-full h-full" />
               </div>
               <h3 className="font-bold mb-1">Толбаев Алинур</h3>
               <p className="text-gray-600 dark:text-gray-400 text-sm">Team-Lead | Creativity Director</p>
@@ -162,7 +162,7 @@ export default function About() {
               className="flex flex-col items-center text-center"
             >
               <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
-                <Image width={128} height={128} src="/placeholder.svg?height=128&width=128&text=Фото" alt="Team member" className="object-cover w-full h-full" />
+                <Image width={128} height={128} src="/images/elements/Alimzhan.jpg?height=128&width=128&text=Фото" alt="Team member" className="object-cover w-full h-full" />
               </div>    
               <h3 className="font-bold mb-1">Жорабек Алимжан</h3>
               <p className="text-gray-600 dark:text-gray-400 text-sm">Designer</p>
