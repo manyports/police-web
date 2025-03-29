@@ -21,7 +21,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-foreground text-background md:mt-24">
+    <footer className="bg-foreground text-background">
       <div className="mx-auto w-[90%] md:w-[80%] max-w-7xl py-12 md:py-16">
         <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12"

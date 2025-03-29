@@ -5,6 +5,18 @@ import { ScenarioData, Scene, AnswerOption } from "../types/scenario";
 import { useScenario } from "../contexts/ScenarioContext";
 import { v4 as uuidv4 } from 'uuid';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Plus, Trash, ArrowLeft, ArrowRight, Save, Info, FileText, Image, List, CheckCircle, Copy, ChevronDown, ChevronUp, X, Play, Eye } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Separator } from "@/components/ui/separator";
 
 const ScenarioEditor: React.FC = () => {
   const { scenario, setScenario } = useScenario();
@@ -21,8 +33,20 @@ const ScenarioEditor: React.FC = () => {
   });
   const [sceneCount, setSceneCount] = useState<number>(0);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState("info");
+  const [expandedScenes, setExpandedScenes] = useState<Record<string, boolean>>({});
+  const [previewMode, setPreviewMode] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
 
-  // Load scenario for editing if ID is provided
+  // Initialize all scenes as expanded
+  useEffect(() => {
+    const initialSceneStates: Record<string, boolean> = {};
+    newScenario.scenes.forEach(scene => {
+      initialSceneStates[scene.id] = true;
+    });
+    setExpandedScenes(initialSceneStates);
+  }, [sceneCount, newScenario.scenes.length]);
+
   useEffect(() => {
     const loadScenarioForEditing = () => {
       if (scenarioId) {
@@ -42,7 +66,6 @@ const ScenarioEditor: React.FC = () => {
           console.error('Error loading scenario for editing:', error);
         }
       } else if (scenario) {
-        // If we have a scenario in context but no ID in URL, it's a new creation
         setNewScenario(scenario);
         setSceneCount(scenario.scenes.length);
       }
@@ -56,18 +79,16 @@ const ScenarioEditor: React.FC = () => {
     setNewScenario(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSceneCountChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const count = parseInt(e.target.value);
+  const handleSceneCountChange = (value: string) => {
+    const count = parseInt(value);
     setSceneCount(count);
     
-    // Resize scenes array based on the new count
     const newScenes = [...newScenario.scenes];
     if (count > newScenes.length) {
-      // Add new scenes
       for (let i = newScenes.length; i < count; i++) {
         newScenes.push({
           id: uuidv4(),
-          title: "",
+          title: `Сцена ${i + 1}`,
           description: "",
           imageUrl: "",
           options: [
@@ -89,7 +110,6 @@ const ScenarioEditor: React.FC = () => {
         });
       }
     } else if (count < newScenes.length) {
-      // Remove excess scenes
       newScenes.splice(count);
     }
     
@@ -147,17 +167,13 @@ const ScenarioEditor: React.FC = () => {
 
   const saveScenarioToLocalStorage = (scenario: ScenarioData) => {
     try {
-      // Get existing scenarios
       const savedScenariosJson = localStorage.getItem('savedScenarios');
       const savedScenarios: ScenarioData[] = savedScenariosJson ? JSON.parse(savedScenariosJson) : [];
       
-      // If we're editing, remove the old version
       const filteredScenarios = savedScenarios.filter(s => s.id !== scenario.id);
       
-      // Add the new/updated scenario
       const updatedScenarios = [...filteredScenarios, scenario];
       
-      // Save back to localStorage
       localStorage.setItem('savedScenarios', JSON.stringify(updatedScenarios));
       
       return true;
@@ -170,22 +186,18 @@ const ScenarioEditor: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate all required fields
     let isValid = true;
     
-    // Check if title and description are provided
     if (!newScenario.title.trim() || !newScenario.description.trim()) {
       isValid = false;
     }
     
-    // Check if all scenes have title, description and options
     for (const scene of newScenario.scenes) {
       if (!scene.title.trim() || !scene.description.trim()) {
         isValid = false;
         break;
       }
       
-      // Check if all options have text
       for (const option of scene.options) {
         if (!option.text.trim() || !option.explanation.trim()) {
           isValid = false;
@@ -210,196 +222,566 @@ const ScenarioEditor: React.FC = () => {
     }
   };
 
-  return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">{isEditing ? "Редактирование сценария" : "Создание нового сценария"}</h1>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="space-y-2">
-          <label className="block text-sm font-medium">
-            Название сценария:
-            <input
-              type="text"
-              name="title"
-              value={newScenario.title}
-              onChange={handleScenarioChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-              required
-            />
-          </label>
-          
-          <label className="block text-sm font-medium">
-            Описание сценария:
-            <textarea
-              name="description"
-              value={newScenario.description}
-              onChange={handleScenarioChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-              required
-            />
-          </label>
-          
-          <label className="block text-sm font-medium">
-            URL превью-картинки сценария:
-            <input
-              type="text"
-              name="previewImageUrl"
-              value={newScenario.previewImageUrl || ""}
-              onChange={handleScenarioChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-              placeholder="https://example.com/image.jpg"
-            />
-            <span className="text-xs text-gray-500 mt-1 block">
-              Добавьте URL изображения для отображения в списке сценариев (необязательно)
-            </span>
-          </label>
-          
-           <label className="block text-sm font-medium">
-            Количество сцен:
-            <select
-              value={sceneCount}
-              onChange={handleSceneCountChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-            >
-              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                <option key={num} value={num}>{num}</option>
-              ))}
-            </select>
-          </label>
-        </div>
+  const toggleSceneExpanded = (sceneId: string) => {
+    setExpandedScenes(prev => ({
+      ...prev,
+      [sceneId]: !prev[sceneId]
+    }));
+  };
 
-        {newScenario.scenes.map((scene, sceneIndex) => (
-          <div key={scene.id} className="border p-4 rounded-md">
-            <h2 className="text-xl font-semibold mb-2">Сцена {sceneIndex + 1}</h2>
-            
-            <div className="space-y-2">
-              <label className="block text-sm font-medium">
-                Заголовок:
-                <input
-                  type="text"
-                  value={scene.title}
-                  onChange={(e) => handleSceneChange(sceneIndex, "title", e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                  required
-                />
-              </label>
-              
-              <label className="block text-sm font-medium">
-                Описание:
-                <textarea
-                  value={scene.description}
-                  onChange={(e) => handleSceneChange(sceneIndex, "description", e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                  required
-                />
-              </label>
-              
-              <label className="block text-sm font-medium">
-                URL изображения:
-                <input
-                  type="text"
-                  value={scene.imageUrl}
-                  onChange={(e) => handleSceneChange(sceneIndex, "imageUrl", e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                  placeholder="https://example.com/image.jpg"
-                />
-              </label>
-              
-              <div className="mt-4">
-                <h3 className="text-lg font-medium mb-2">Варианты ответов:</h3>
+  const duplicateScene = (sceneIndex: number) => {
+    const sceneToClone = newScenario.scenes[sceneIndex];
+    const clonedScene = {
+      ...sceneToClone,
+      id: uuidv4(),
+      title: `${sceneToClone.title} (копия)`,
+      options: sceneToClone.options.map(option => ({
+        ...option,
+        id: uuidv4()
+      }))
+    };
+    
+    const updatedScenes = [...newScenario.scenes];
+    updatedScenes.splice(sceneIndex + 1, 0, clonedScene);
+    
+    setNewScenario(prev => ({
+      ...prev,
+      scenes: updatedScenes
+    }));
+    setSceneCount(updatedScenes.length);
+  };
+
+  const scenesComplete = newScenario.scenes.every(scene => 
+    scene.title.trim() !== "" && 
+    scene.description.trim() !== "" && 
+    scene.options.every(option => 
+      option.text.trim() !== "" && 
+      option.explanation.trim() !== ""
+    )
+  );
+
+  const basicInfoComplete = newScenario.title.trim() !== "" && newScenario.description.trim() !== "";
+
+  const getCompletionStatus = () => {
+    return {
+      info: basicInfoComplete,
+      scenes: scenesComplete,
+      complete: basicInfoComplete && scenesComplete
+    };
+  };
+
+  const status = getCompletionStatus();
+
+  const renderWizardStep = () => {
+    switch (currentStep) {
+      case 0:
+        return (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Основная информация</CardTitle>
+                <CardDescription>Введите общую информацию о сценарии</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="title">Название сценария</Label>
+                  <Input
+                    id="title"
+                    name="title"
+                    value={newScenario.title}
+                    onChange={handleScenarioChange}
+                    required
+                    placeholder="Например: Задержание вооруженного преступника"
+                  />
+                </div>
                 
-                {scene.options.map((option, optionIndex) => (
-                  <div key={option.id} className="border p-3 rounded-md mb-2">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-medium">Вариант {optionIndex + 1}</h4>
-                      {scene.options.length > 2 && (
-                        <button
-                          type="button"
-                          onClick={() => removeOption(sceneIndex, optionIndex)}
-                          className="text-red-500"
+                <div className="grid gap-2">
+                  <Label htmlFor="description">Описание сценария</Label>
+                  <Textarea
+                    id="description"
+                    name="description"
+                    value={newScenario.description}
+                    onChange={handleScenarioChange}
+                    required
+                    placeholder="Опишите цель и содержание сценария"
+                    className="min-h-[120px]"
+                  />
+                </div>
+                
+                <div className="grid gap-2">
+                  <Label htmlFor="previewImageUrl">URL превью-картинки сценария</Label>
+                  <Input
+                    id="previewImageUrl"
+                    name="previewImageUrl"
+                    value={newScenario.previewImageUrl || ""}
+                    onChange={handleScenarioChange}
+                    placeholder="https://example.com/image.jpg"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Добавьте URL изображения для отображения в списке сценариев (необязательно)
+                  </p>
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-end">
+                <Button 
+                  onClick={() => setCurrentStep(1)}
+                  disabled={!basicInfoComplete}
+                >
+                  Далее <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
+        );
+      case 1:
+        return (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Сцены сценария</CardTitle>
+                <CardDescription>Добавьте сцены и варианты ответов</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="sceneCount">Количество сцен</Label>
+                  <div className="flex gap-4 items-center">
+                    <Select 
+                      value={sceneCount.toString()} 
+                      onValueChange={handleSceneCountChange}
+                    >
+                      <SelectTrigger id="sceneCount" className="w-[180px]">
+                        <SelectValue placeholder="Выберите количество" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                          <SelectItem key={num} value={num.toString()}>{num}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <p className="text-sm text-muted-foreground">
+                      Всего сцен: {newScenario.scenes.length}
+                    </p>
+                  </div>
+                </div>
+                
+                {newScenario.scenes.length > 0 ? (
+                  <div className="space-y-4 mt-4">
+                    {newScenario.scenes.map((scene, sceneIndex) => (
+                      <Card key={scene.id} className="border shadow-sm">
+                        <div 
+                          className="p-4 flex items-center justify-between cursor-pointer border-b"
+                          onClick={() => toggleSceneExpanded(scene.id)}
                         >
-                          Удалить
-                        </button>
-                      )}
+                          <div className="flex items-center">
+                            <Badge variant="outline" className="mr-2">{sceneIndex + 1}</Badge>
+                            <h3 className="font-medium">{scene.title || `Сцена ${sceneIndex + 1}`}</h3>
+                            {scene.imageUrl && <Image className="h-4 w-4 ml-2 text-muted-foreground" />}
+                            <Badge 
+                              variant={scene.options.length > 0 ? "default" : "outline"} 
+                              className="ml-2"
+                            >
+                              {scene.options.length} {getOptionLabel(scene.options.length)}
+                            </Badge>
+                          </div>
+                          <div className="flex items-center">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                duplicateScene(sceneIndex);
+                              }}
+                            >
+                              <Copy className="h-4 w-4" />
+                            </Button>
+                            {expandedScenes[scene.id] ? (
+                              <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                            ) : (
+                              <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                            )}
+                          </div>
+                        </div>
+                        
+                        {expandedScenes[scene.id] && (
+                          <CardContent className="p-4 pt-4">
+                            <div className="grid gap-4">
+                              <div className="grid gap-2">
+                                <Label htmlFor={`scene-${sceneIndex}-title`}>Заголовок</Label>
+                                <Input
+                                  id={`scene-${sceneIndex}-title`}
+                                  value={scene.title}
+                                  onChange={(e) => handleSceneChange(sceneIndex, "title", e.target.value)}
+                                  required
+                                  placeholder="Введите заголовок сцены"
+                                />
+                              </div>
+                              
+                              <div className="grid gap-2">
+                                <Label htmlFor={`scene-${sceneIndex}-description`}>Описание</Label>
+                                <Textarea
+                                  id={`scene-${sceneIndex}-description`}
+                                  value={scene.description}
+                                  onChange={(e) => handleSceneChange(sceneIndex, "description", e.target.value)}
+                                  required
+                                  placeholder="Опишите ситуацию в этой сцене"
+                                  className="min-h-[100px]"
+                                />
+                              </div>
+                              
+                              <div className="grid gap-2">
+                                <Label htmlFor={`scene-${sceneIndex}-imageUrl`}>URL изображения</Label>
+                                <Input
+                                  id={`scene-${sceneIndex}-imageUrl`}
+                                  value={scene.imageUrl}
+                                  onChange={(e) => handleSceneChange(sceneIndex, "imageUrl", e.target.value)}
+                                  placeholder="https://example.com/image.jpg"
+                                />
+                                {scene.imageUrl && (
+                                  <div className="mt-2 w-full max-h-[200px] overflow-hidden rounded-md border">
+                                    <img 
+                                      src={scene.imageUrl} 
+                                      alt={scene.title} 
+                                      className="w-full h-auto object-cover"
+                                      onError={(e) => {
+                                        e.currentTarget.src = '/images/scenario-placeholder.svg';
+                                      }}
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                              
+                              <div className="mt-2">
+                                <div className="flex items-center justify-between mb-3">
+                                  <h3 className="text-base font-medium">Варианты ответов</h3>
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => addOption(sceneIndex)}
+                                  >
+                                    <Plus className="h-4 w-4 mr-2" /> Добавить вариант
+                                  </Button>
+                                </div>
+                                
+                                <div className="space-y-3">
+                                  {scene.options.map((option, optionIndex) => (
+                                    <Card key={option.id} className="border">
+                                      <CardHeader className="p-3 pb-1">
+                                        <div className="flex items-center justify-between">
+                                          <div className="flex items-center">
+                                            <Badge variant="outline" className="mr-2">{optionIndex + 1}</Badge>
+                                            <h4 className="text-sm font-medium">Вариант ответа</h4>
+                                          </div>
+                                          {scene.options.length > 2 && (
+                                            <Button
+                                              type="button"
+                                              variant="ghost"
+                                              size="sm"
+                                              onClick={() => removeOption(sceneIndex, optionIndex)}
+                                            >
+                                              <X className="h-4 w-4 text-destructive" />
+                                            </Button>
+                                          )}
+                                        </div>
+                                      </CardHeader>
+                                      
+                                      <CardContent className="p-3 pt-0 space-y-3">
+                                        <div className="grid gap-2">
+                                          <Label htmlFor={`option-${sceneIndex}-${optionIndex}-text`}>Текст варианта</Label>
+                                          <Input
+                                            id={`option-${sceneIndex}-${optionIndex}-text`}
+                                            value={option.text}
+                                            onChange={(e) => handleOptionChange(sceneIndex, optionIndex, "text", e.target.value)}
+                                            required
+                                            placeholder="Опишите вариант действия"
+                                          />
+                                        </div>
+                                        
+                                        <div className="flex items-center space-x-2">
+                                          <Checkbox 
+                                            id={`option-${sceneIndex}-${optionIndex}-correct`}
+                                            checked={option.isCorrect}
+                                            onCheckedChange={(checked) => 
+                                              handleOptionChange(sceneIndex, optionIndex, "isCorrect", checked === true)
+                                            }
+                                          />
+                                          <Label 
+                                            htmlFor={`option-${sceneIndex}-${optionIndex}-correct`}
+                                            className="text-sm font-normal"
+                                          >
+                                            Правильный ответ
+                                          </Label>
+                                        </div>
+                                        
+                                        <div className="grid gap-2">
+                                          <Label htmlFor={`option-${sceneIndex}-${optionIndex}-score`}>Баллы</Label>
+                                          <Input
+                                            id={`option-${sceneIndex}-${optionIndex}-score`}
+                                            type="number"
+                                            value={option.score}
+                                            onChange={(e) => handleOptionChange(sceneIndex, optionIndex, "score", parseInt(e.target.value))}
+                                            min="0"
+                                            required
+                                          />
+                                        </div>
+                                        
+                                        <div className="grid gap-2">
+                                          <Label htmlFor={`option-${sceneIndex}-${optionIndex}-explanation`}>Объяснение</Label>
+                                          <Textarea
+                                            id={`option-${sceneIndex}-${optionIndex}-explanation`}
+                                            value={option.explanation}
+                                            onChange={(e) => handleOptionChange(sceneIndex, optionIndex, "explanation", e.target.value)}
+                                            required
+                                            placeholder="Объяснение, почему этот вариант правильный или неправильный"
+                                          />
+                                        </div>
+                                      </CardContent>
+                                    </Card>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        )}
+                      </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <Alert className="mt-4">
+                    <AlertDescription>
+                      Выберите количество сцен, чтобы начать создание сценария
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </CardContent>
+              <CardFooter className="flex justify-between">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setCurrentStep(0)}
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Назад
+                </Button>
+                
+                <Button 
+                  onClick={() => setCurrentStep(2)} 
+                  disabled={!scenesComplete}
+                >
+                  Далее <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
+        );
+      case 2:
+        return (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Предпросмотр и сохранение</CardTitle>
+                <CardDescription>Просмотрите созданный сценарий перед сохранением</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-medium">Основная информация</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Название</p>
+                        <p>{newScenario.title}</p>
+                      </div>
+                      <div className="md:col-span-2">
+                        <p className="text-sm font-medium text-muted-foreground">Описание</p>
+                        <p>{newScenario.description}</p>
+                      </div>
                     </div>
                     
-                    <div className="space-y-2">
-                      <label className="block text-sm font-medium">
-                        Текст варианта:
-                        <input
-                          type="text"
-                          value={option.text}
-                          onChange={(e) => handleOptionChange(sceneIndex, optionIndex, "text", e.target.value)}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                          required
-                        />
-                      </label>
-                      
-                      <div className="flex items-center">
-                        <label className="inline-flex items-center">
-                          <input
-                            type="checkbox"
-                            checked={option.isCorrect}
-                            onChange={(e) => handleOptionChange(sceneIndex, optionIndex, "isCorrect", e.target.checked)}
-                            className="form-checkbox rounded"
+                    {newScenario.previewImageUrl && (
+                      <div className="mt-4">
+                        <p className="text-sm font-medium text-muted-foreground mb-2">Превью</p>
+                        <div className="w-full max-h-[200px] overflow-hidden rounded-md border">
+                          <img 
+                            src={newScenario.previewImageUrl} 
+                            alt={newScenario.title} 
+                            className="w-full h-auto object-cover"
+                            onError={(e) => {
+                              e.currentTarget.src = '/images/scenario-placeholder.svg';
+                            }}
                           />
-                          <span className="ml-2">Правильный ответ</span>
-                        </label>
+                        </div>
                       </div>
-                      
-                      <label className="block text-sm font-medium">
-                        Баллы:
-                        <input
-                          type="number"
-                          value={option.score}
-                          onChange={(e) => handleOptionChange(sceneIndex, optionIndex, "score", parseInt(e.target.value))}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                          min="0"
-                          required
-                        />
-                      </label>
-                      
-                      <label className="block text-sm font-medium">
-                        Объяснение:
-                        <textarea
-                          value={option.explanation}
-                          onChange={(e) => handleOptionChange(sceneIndex, optionIndex, "explanation", e.target.value)}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                          required
-                          placeholder="Объяснение, почему этот вариант правильный или неправильный"
-                        />
-                      </label>
+                    )}
+                  </div>
+                  
+                  <Separator />
+                  
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-medium">Сцены ({newScenario.scenes.length})</h3>
+                    <div className="space-y-4">
+                      {newScenario.scenes.map((scene, index) => (
+                        <div key={scene.id} className="p-4 border rounded-md">
+                          <div className="flex items-center mb-2">
+                            <Badge variant="outline" className="mr-2">{index + 1}</Badge>
+                            <h4 className="font-medium">{scene.title}</h4>
+                          </div>
+                          <p className="text-sm mb-3">{scene.description}</p>
+                          
+                          {scene.imageUrl && (
+                            <div className="mb-3 w-full max-h-[120px] overflow-hidden rounded-md border">
+                              <img 
+                                src={scene.imageUrl} 
+                                alt={scene.title} 
+                                className="w-full h-auto object-cover"
+                                onError={(e) => {
+                                  e.currentTarget.src = '/images/scenario-placeholder.svg';
+                                }}
+                              />
+                            </div>
+                          )}
+                          
+                          <div className="space-y-2">
+                            <p className="text-sm font-medium">Варианты ответов:</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                              {scene.options.map((option, optIndex) => (
+                                <div 
+                                  key={option.id} 
+                                  className={`p-2 text-sm rounded-md ${option.isCorrect 
+                                    ? 'bg-green-50 border-green-200 border' 
+                                    : 'bg-gray-50 border border-gray-200'}`}
+                                >
+                                  <div className="flex gap-2 mb-1">
+                                    <Badge variant="outline">{optIndex + 1}</Badge>
+                                    <span className="font-medium">{option.text}</span>
+                                  </div>
+                                  <div className="flex gap-2 text-xs text-muted-foreground">
+                                    <span>{option.isCorrect ? 'Правильный' : 'Неправильный'}</span>
+                                    <span>•</span>
+                                    <span>{option.score} баллов</span>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
-                
-                <button
-                  type="button"
-                  onClick={() => addOption(sceneIndex)}
-                  className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-between">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setCurrentStep(1)}
                 >
-                  Добавить вариант ответа
-                </button>
-              </div>
-            </div>
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Назад
+                </Button>
+                
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline"
+                    onClick={() => window.open(`/scenarios/${newScenario.id}/preview`, '_blank')}
+                  >
+                    <Eye className="mr-2 h-4 w-4" /> Тестовый запуск
+                  </Button>
+                  
+                  <Button 
+                    type="button"
+                    onClick={handleSubmit}
+                    disabled={!status.complete}
+                  >
+                    <Save className="mr-2 h-4 w-4" /> {isEditing ? "Сохранить изменения" : "Создать сценарий"}
+                  </Button>
+                </div>
+              </CardFooter>
+            </Card>
           </div>
-        ))}
-        
-        <div className="flex justify-between">
-          <button
-            type="button"
-            onClick={() => router.push('/my-scenarios')}
-            className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md"
-          >
-            Отмена
-          </button>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-green-500 text-white rounded-md"
-          >
-            {isEditing ? "Сохранить изменения" : "Создать сценарий"}
-          </button>
+        );
+    }
+  };
+
+  function getOptionLabel(count: number) {
+    if (count === 1) return "вариант";
+    if (count >= 2 && count <= 4) return "варианта";
+    return "вариантов";
+  }
+
+  const getStepStatus = (step: number) => {
+    const { info, scenes, complete } = status;
+    
+    switch (step) {
+      case 0: 
+        return info ? "complete" : "incomplete";
+      case 1:
+        return scenes ? "complete" : "incomplete";
+      case 2:
+        return complete ? "complete" : "incomplete";
+      default:
+        return "incomplete";
+    }
+  };
+
+  const progressSteps = [
+    { name: "Информация", status: getStepStatus(0) },
+    { name: "Сцены", status: getStepStatus(1) },
+    { name: "Предпросмотр", status: getStepStatus(2) }
+  ];
+
+  return (
+    <div className="min-h-[60vh] flex flex-col">
+      <div className="mb-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-medium">
+            {isEditing ? "Редактирование сценария" : "Создание сценария"}
+          </h2>
+          
+          <div className="flex items-center">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => router.push('/my-scenarios')}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" /> К списку сценариев
+            </Button>
+          </div>
         </div>
-      </form>
+        
+        <div className="flex justify-between mb-6">
+          <div className="flex items-center gap-2">
+            {progressSteps.map((step, index) => (
+              <React.Fragment key={index}>
+                {index > 0 && <Separator orientation="vertical" className="h-6" />}
+                <button
+                  onClick={() => {
+                    // Allow navigating to completed steps or the current step + 1
+                    if (step.status === "complete" || index <= currentStep) {
+                      setCurrentStep(index);
+                    }
+                  }}
+                  className={`flex items-center ${
+                    currentStep === index 
+                      ? 'text-primary font-medium' 
+                      : step.status === "complete" 
+                        ? 'text-muted-foreground hover:text-primary cursor-pointer' 
+                        : 'text-muted-foreground opacity-50 cursor-not-allowed'
+                  }`}
+                >
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center mr-2 ${
+                    currentStep === index 
+                      ? 'bg-primary text-primary-foreground' 
+                      : step.status === "complete" 
+                        ? 'bg-primary/20 text-primary' 
+                        : 'bg-muted text-muted-foreground'
+                  }`}>
+                    {step.status === "complete" ? <CheckCircle className="h-4 w-4" /> : index + 1}
+                  </div>
+                  <span>{step.name}</span>
+                </button>
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </div>
+      
+      {renderWizardStep()}
     </div>
   );
 };

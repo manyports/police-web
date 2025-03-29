@@ -5,13 +5,15 @@ import { ScenarioData } from '../types/scenario';
 import { useScenario } from '../contexts/ScenarioContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { PlusCircle, Play, Edit, Trash } from 'lucide-react';
 
 const SavedScenarios: React.FC = () => {
   const [savedScenarios, setSavedScenarios] = useState<ScenarioData[]>([]);
   const { setScenario } = useScenario();
   const router = useRouter();
 
-  // Load saved scenarios from localStorage on component mount
   useEffect(() => {
     const loadSavedScenarios = () => {
       try {
@@ -36,7 +38,6 @@ const SavedScenarios: React.FC = () => {
     const updatedScenarios = savedScenarios.filter(s => s.id !== scenarioId);
     setSavedScenarios(updatedScenarios);
     
-    // Update localStorage
     try {
       localStorage.setItem('savedScenarios', JSON.stringify(updatedScenarios));
     } catch (error) {
@@ -49,14 +50,11 @@ const SavedScenarios: React.FC = () => {
     router.push(`/scenarios/${scenario.id}/play`);
   };
 
-  // Константа для заглушки
   const PLACEHOLDER_IMAGE = '/images/scenario-placeholder.svg';
 
-  // Функция для проверки валидности URL
   const isValidUrl = (urlString: string | undefined): boolean => {
     if (!urlString) return false;
     
-    // Проверяем, что URL начинается с http или https
     if (urlString.startsWith('http://') || urlString.startsWith('https://')) {
       try {
         new URL(urlString);
@@ -69,27 +67,22 @@ const SavedScenarios: React.FC = () => {
     return false;
   };
 
-  // Функция для определения URL изображения
   const getPreviewImage = (scenario: ScenarioData): string => {
-    // Если есть превью-картинка и она валидна (внешний URL), используем её
     if (scenario.previewImageUrl && isValidUrl(scenario.previewImageUrl)) {
       return scenario.previewImageUrl;
     }
     
-    // Если превью-картинка есть, но это локальный путь (например из public/scenes)
     if (scenario.previewImageUrl && scenario.previewImageUrl.trim() !== '') {
       return scenario.previewImageUrl.startsWith('/') 
         ? scenario.previewImageUrl 
         : `/${scenario.previewImageUrl}`;
     }
     
-    // Иначе пробуем использовать изображение из первой сцены (внешний URL)
     if (scenario.scenes && scenario.scenes.length > 0 && 
         scenario.scenes[0].imageUrl && isValidUrl(scenario.scenes[0].imageUrl)) {
       return scenario.scenes[0].imageUrl;
     }
     
-    // Пробуем использовать изображение из первой сцены (локальный путь)
     if (scenario.scenes && scenario.scenes.length > 0 && 
         scenario.scenes[0].imageUrl && scenario.scenes[0].imageUrl.trim() !== '') {
       return scenario.scenes[0].imageUrl.startsWith('/') 
@@ -97,40 +90,37 @@ const SavedScenarios: React.FC = () => {
         : `/${scenario.scenes[0].imageUrl}`;
     }
     
-    // Если ничего не подходит, возвращаем заглушку
     return PLACEHOLDER_IMAGE;
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Сохраненные сценарии</h1>
-        <Link 
-          href="/scenario-editor"
-          className="px-4 py-2 bg-blue-500 text-white rounded-md"
-        >
-          Создать новый сценарий
-        </Link>
+    <div className="min-h-[60vh] flex flex-col">
+      <div className="mb-6">
+        <Button asChild className="w-full sm:w-auto">
+          <Link href="/scenario-editor">
+            <PlusCircle className="mr-2" />
+            Создать новый сценарий
+          </Link>
+        </Button>
       </div>
 
       {savedScenarios.length === 0 ? (
-        <div className="text-center py-8">
-          <p className="text-gray-500">У вас пока нет сохраненных сценариев.</p>
-          <Link 
-            href="/scenario-editor"
-            className="mt-4 inline-block px-4 py-2 bg-blue-500 text-white rounded-md"
-          >
-            Создать первый сценарий
-          </Link>
-        </div>
+        <Card className="flex-grow flex flex-col justify-center items-center py-16">
+          <CardContent className="text-center">
+            <p className="text-muted-foreground mb-6">У вас пока нет сохраненных сценариев.</p>
+            <Button asChild>
+              <Link href="/scenario-editor">
+                <PlusCircle className="mr-2" />
+                Создать первый сценарий
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {savedScenarios.map(scenario => (
-            <div 
-              key={scenario.id} 
-              className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="h-40 bg-gray-100 relative">
+            <Card key={scenario.id} className="overflow-hidden flex flex-col h-full">
+              <div className="h-32 sm:h-40 bg-gray-100 relative">
                 <img
                   src={getPreviewImage(scenario)}
                   alt={scenario.title}
@@ -142,36 +132,48 @@ const SavedScenarios: React.FC = () => {
                 />
               </div>
               
-              <div className="p-4">
-                <h2 className="text-xl font-semibold mb-2">{scenario.title}</h2>
-                <p className="text-gray-600 mb-4 line-clamp-2">{scenario.description}</p>
+              <div className="flex flex-col flex-grow">
+                <CardHeader className="p-3 sm:p-4 pb-0">
+                  <h2 className="text-lg sm:text-xl font-semibold line-clamp-1">{scenario.title}</h2>
+                </CardHeader>
                 
-                <div className="flex justify-between mt-4">
-                  <span className="text-sm text-gray-500">{scenario.scenes.length} сцен</span>
-                  <div className="space-x-2">
-                    <button
-                      onClick={() => handlePlayScenario(scenario)}
-                      className="px-3 py-1 bg-blue-500 text-white text-sm rounded-md"
-                    >
-                      Запустить
-                    </button>
-                    <Link
-                      href={`/scenario-editor?id=${scenario.id}`}
-                      className="px-3 py-1 bg-gray-200 text-gray-800 text-sm rounded-md"
-                      onClick={() => handleLoadScenario(scenario)}
-                    >
-                      Редактировать
-                    </Link>
-                    <button
-                      onClick={() => handleDeleteScenario(scenario.id)}
-                      className="px-3 py-1 bg-red-500 text-white text-sm rounded-md"
-                    >
-                      Удалить
-                    </button>
+                <CardContent className="p-3 sm:p-4 pt-2 flex-grow">
+                  <p className="text-muted-foreground text-sm line-clamp-2">{scenario.description}</p>
+                  <div className="mt-2">
+                    <span className="text-sm text-muted-foreground">{scenario.scenes.length} сцен</span>
                   </div>
-                </div>
+                </CardContent>
+                
+                <CardFooter className="p-3 sm:p-4 pt-0 flex flex-wrap sm:flex-nowrap justify-end gap-2">
+                  <Button 
+                    size="sm" 
+                    variant="destructive" 
+                    onClick={() => handleDeleteScenario(scenario.id)}
+                    className="w-auto"
+                  >
+                    <Trash className="h-4 w-4" />
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    asChild
+                    className="w-auto"
+                    onClick={() => handleLoadScenario(scenario)}
+                  >
+                    <Link href={`/scenario-editor?id=${scenario.id}`}>
+                      <Edit className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button 
+                    size="sm"
+                    className="w-auto" 
+                    onClick={() => handlePlayScenario(scenario)}
+                  >
+                    <Play className="h-4 w-4" />
+                  </Button>
+                </CardFooter>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       )}
