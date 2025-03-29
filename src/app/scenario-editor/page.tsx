@@ -1,10 +1,11 @@
 "use client";
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import ScenarioEditor from '../../components/ScenarioEditor';
 import { ScenarioProvider } from '../../contexts/ScenarioContext';
 import { motion } from 'framer-motion';
-export default function ScenarioEditorPage() {
+
+function ScenarioEditorContent() {
   return (
     <ScenarioProvider>
       <div className="min-h-screen bg-gray-50">
@@ -14,5 +15,13 @@ export default function ScenarioEditorPage() {
         </motion.div>
       </div>
     </ScenarioProvider>
+  );
+}
+
+export default function ScenarioEditorPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center">Загрузка...</div>}>
+      <ScenarioEditorContent />
+    </Suspense>
   );
 } 
