@@ -1,18 +1,26 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { Search, Filter, ChevronDown, Users, Clock, Star, Play, Info, AlertTriangle, Zap } from "lucide-react"
+import { Search, Filter, ChevronDown, Clock, Star, Play, Info, AlertTriangle, Zap, Award } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
+import { Scenario } from "@/types/scenario"
 
 export default function ScenariosPage() {
   const [activeCategory, setActiveCategory] = useState("all")
-  const [activeFilter, setActiveFilter] = useState("popular")
+  const [activeFilter, setActiveFilter] = useState("all")
   const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [scenarios, setScenarios] = useState<Scenario[]>([])
+
+  useEffect(() => {
+    fetch('/data/scenarios.json')
+      .then(response => response.json())
+      .then(data => setScenarios(data.scenarios))
+  }, [])
 
   const categories = [
     { id: "all", name: "Все сценарии" },
@@ -20,113 +28,15 @@ export default function ScenariosPage() {
     { id: "hostage", name: "Заложники" },
     { id: "investigation", name: "Расследования" },
     { id: "cyber", name: "Киберпреступления" },
-    { id: "tactical", name: "Тактические" },
   ]
 
   const filters = [
+    { id: "all", name: "Все" },
     { id: "popular", name: "Популярные" },
     { id: "new", name: "Новые" },
     { id: "recommended", name: "Рекомендуемые" },
   ]
 
-  const scenarios = [
-    {
-      id: 1,
-      title: "Патрулирование в ночное время",
-      category: "patrol",
-      difficulty: "medium",
-      duration: "30-45 мин",
-      players: "1-2",
-      rating: 4.8,
-      reviews: 124,
-      image: "/placeholder.svg?height=400&width=600&text=Патрулирование",
-      description:
-        "Сценарий моделирует ночное патрулирование в городском районе с высоким уровнем преступности. Отработка навыков наблюдения, реагирования на подозрительное поведение и взаимодействия с гражданами.",
-      tags: ["Ночь", "Город", "Патруль"],
-      isNew: false,
-      isPopular: true,
-    },
-    {
-      id: 2,
-      title: "Захват заложников в банке",
-      category: "hostage",
-      difficulty: "hard",
-      duration: "45-60 мин",
-      players: "4-8",
-      rating: 4.9,
-      reviews: 87,
-      image: "/placeholder.svg?height=400&width=600&text=Заложники",
-      description:
-        "Сложная ситуация с захватом заложников в банке. Тренировка навыков ведения переговоров, тактического планирования и координации действий группы.",
-      tags: ["Заложники", "Переговоры", "Тактика"],
-      isNew: false,
-      isPopular: true,
-    },
-    {
-      id: 3,
-      title: "Расследование места преступления",
-      category: "investigation",
-      difficulty: "medium",
-      duration: "40-50 мин",
-      players: "1-3",
-      rating: 4.7,
-      reviews: 56,
-      image: "/placeholder.svg?height=400&width=600&text=Расследование",
-      description:
-        "Детальное изучение места преступления, сбор улик и формирование версий. Развитие навыков наблюдательности, логического мышления и процедурных знаний.",
-      tags: ["Улики", "Анализ", "Криминалистика"],
-      isNew: true,
-      isPopular: false,
-    },
-    {
-      id: 4,
-      title: "Кибератака на инфраструктуру",
-      category: "cyber",
-      difficulty: "hard",
-      duration: "50-70 мин",
-      players: "2-4",
-      rating: 4.6,
-      reviews: 42,
-      image: "/placeholder.svg?height=400&width=600&text=Киберпреступления",
-      description:
-        "Реагирование на кибератаку, направленную на критическую инфраструктуру. Отработка навыков цифровой криминалистики, координации с техническими специалистами и принятия решений в условиях неопределенности.",
-      tags: ["Кибербезопасность", "Технологии", "Расследование"],
-      isNew: true,
-      isPopular: false,
-    },
-    {
-      id: 5,
-      title: "Штурм здания с террористами",
-      category: "tactical",
-      difficulty: "extreme",
-      duration: "30-40 мин",
-      players: "4-8",
-      rating: 4.9,
-      reviews: 103,
-      image: "/placeholder.svg?height=400&width=600&text=Тактический",
-      description:
-        "Высокоинтенсивный сценарий штурма здания, захваченного террористами. Тренировка тактических навыков, командной работы и принятия решений под давлением.",
-      tags: ["Штурм", "Спецоперация", "Командная работа"],
-      isNew: false,
-      isPopular: true,
-    },
-    {
-      id: 6,
-      title: "Дорожно-транспортное происшествие",
-      category: "patrol",
-      difficulty: "easy",
-      duration: "20-30 мин",
-      players: "1-2",
-      rating: 4.5,
-      reviews: 78,
-      image: "/placeholder.svg?height=400&width=600&text=ДТП",
-      description:
-        "Реагирование на дорожно-транспортное происшествие с пострадавшими. Отработка навыков оказания первой помощи, обеспечения безопасности места происшествия и сбора информации для отчета.",
-      tags: ["ДТП", "Первая помощь", "Документирование"],
-      isNew: false,
-      isPopular: false,
-    },
-  ]
 
   const filteredScenarios = scenarios.filter((scenario) => {
     if (activeCategory !== "all" && scenario.category !== activeCategory) {
@@ -139,6 +49,10 @@ export default function ScenariosPage() {
 
     if (activeFilter === "popular" && !scenario.isPopular) {
       return false
+    }
+
+    if (activeFilter === "all") {
+      return true
     }
 
     return true
@@ -204,12 +118,22 @@ export default function ScenariosPage() {
               <Link href="/scenarios/create">Создать сценарий</Link>
             </Button>
           </div>
-
+        
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-grow">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input type="search" placeholder="Поиск сценариев..." className="pl-10" />
             </div>
+            <Button 
+              variant="outline" 
+              className="flex items-center gap-2"
+              onClick={() => {
+                setActiveCategory("all")
+                setActiveFilter("all")
+              }}
+            >
+              Сбросить фильтры
+            </Button>
             <div className="relative">
               <Button
                 variant="outline"
@@ -238,13 +162,13 @@ export default function ScenariosPage() {
                   </div>
 
                   <div className="mb-4">
-                    <h3 className="font-medium mb-2">Количество игроков</h3>
+                    <h3 className="font-medium mb-2">Баллы</h3>
                     <div className="space-y-2">
-                      {["1", "2-3", "4-6", "7+"].map((players) => (
-                        <div key={players} className="flex items-center">
-                          <input type="checkbox" id={`players-${players}`} className="mr-2" />
-                          <label htmlFor={`players-${players}`} className="text-sm">
-                            {players} игроков
+                      {["0-100", "101-200", "201-300", "301+"].map((pointsRange) => (
+                        <div key={pointsRange} className="flex items-center">
+                          <input type="checkbox" id={`points-${pointsRange}`} className="mr-2" />
+                          <label htmlFor={`points-${pointsRange}`} className="text-sm">
+                            {pointsRange} баллов
                           </label>
                         </div>
                       ))}
@@ -263,7 +187,7 @@ export default function ScenariosPage() {
           </div>
         </div>
       </div>
-
+          
       <div className="mx-auto w-[90%] md:w-[80%] max-w-7xl py-8">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="md:w-1/4 w-full">
@@ -360,7 +284,7 @@ export default function ScenariosPage() {
                       </div>
                     </div>
                     <div className="p-4">
-                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{scenario.description}</p>
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-4">{scenario.description}</p>
                       <div className="flex flex-wrap gap-2 mb-4">
                         {scenario.tags.map((tag) => (
                           <Badge key={tag} variant="secondary" className="bg-blue-50 text-primary">
@@ -375,8 +299,8 @@ export default function ScenariosPage() {
                             <span>{scenario.duration}</span>
                           </div>
                           <div className="flex items-center gap-1">
-                            <Users className="h-4 w-4" />
-                            <span>{scenario.players}</span>
+                            <Award className="h-4 w-4" />
+                            <span>{scenario.points} баллов</span>
                           </div>
                         </div>
                         <div className="flex items-center gap-1">
@@ -388,13 +312,13 @@ export default function ScenariosPage() {
                     </div>
                     <div className="border-t border-gray-200 p-4 flex justify-between flex-wrap gap-2">
                       <Button variant="outline" size="sm" asChild>
-                        <Link href={`/scenarios/${scenario.id}`} className="flex items-center gap-2">
+                        <Link href={`/scenarios/${scenario.scenarioId || scenario.id}`} className="flex items-center gap-2">
                           <Info className="h-4 w-4" />
                           Подробнее
                         </Link>
                       </Button>
                       <Button size="sm" asChild>
-                        <Link href={`/scenarios/${scenario.id}/start`} className="flex items-center gap-2">
+                        <Link href={`/scenarios/${scenario.scenarioId || scenario.id}/start`} className="flex items-center gap-2">
                           <Zap className="h-4 w-4" />
                           Начать
                         </Link>

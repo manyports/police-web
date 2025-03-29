@@ -21,7 +21,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-foreground text-background mt-16 md:mt-24">
+    <footer className="bg-foreground text-background md:mt-24">
       <div className="mx-auto w-[90%] md:w-[80%] max-w-7xl py-12 md:py-16">
         <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12"
@@ -87,11 +87,11 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-center gap-3 text-sm text-background/70">
                 <Mail className="h-4 w-4 flex-shrink-0" />
-                <span>info@policetrain.com</span>
+                <span>info@policetrain.kz</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-background/70">
                 <Phone className="h-4 w-4 flex-shrink-0" />
-                <span>+7 (495) 123-4567</span>
+                <span>+7 (707) 000-00-00</span>
               </li>
             </ul>
             <div className="flex gap-4 mt-6">
@@ -130,10 +130,6 @@ export default function Footer() {
             </div>
           </motion.div>
         </motion.div>
-
-        <div className="border-t border-background/10 mt-12 pt-8 text-sm text-center text-background/50">
-          © {new Date().getFullYear()} PoliceTrain. Все права защищены
-        </div>
       </div>
     </footer>
   )

@@ -12,7 +12,7 @@ export default function ModulesSection() {
       title: "Сценарные симуляции",
       description: "Реалистичные сценарии для отработки действий в различных ситуациях",
       icon: Shield,
-      image: "/placeholder.svg?height=400&width=600&text=Сценарные+симуляции",
+      image: "main/images/2.1.svg?height=400&width=600&text=Сценарные+симуляции",
       features: [
         "Более 50 реалистичных сценариев",
         "Настраиваемые параметры сложности",
@@ -24,7 +24,7 @@ export default function ModulesSection() {
       title: "Анализ действий",
       description: "Детальный разбор и оценка действий с рекомендациями по улучшению",
       icon: BarChart,
-      image: "/placeholder.svg?height=400&width=600&text=Анализ+действий",
+      image: "main/images/2.2.svg?height=400&width=600&text=Анализ+действий",
       features: [
         "Запись и воспроизведение действий",
         "Автоматическая оценка эффективности",
@@ -36,7 +36,7 @@ export default function ModulesSection() {
       title: "Командная работа",
       description: "Многопользовательский режим для отработки взаимодействия в команде",
       icon: Users,
-      image: "/placeholder.svg?height=400&width=600&text=Командная+работа",
+      image: "main/images/2.3.svg?height=400&width=600&text=Командная+работа",
       features: [
         "До 8 участников одновременно",
         "Распределение ролей и обязанностей",
@@ -48,7 +48,7 @@ export default function ModulesSection() {
       title: "VR-тренировки",
       description: "Максимальное погружение с использованием технологий виртуальной реальности",
       icon: Monitor,
-      image: "/placeholder.svg?height=400&width=600&text=VR-тренировки",
+      image: "main/images/2.4.svg?height=400&width=600&text=VR-тренировки",
       features: [
         "Поддержка популярных VR-гарнитур",
         "Полное отслеживание движений",
@@ -60,7 +60,7 @@ export default function ModulesSection() {
       title: "Теоретическая база",
       description: "Доступ к справочникам, нормативным актам и учебным материалам",
       icon: BookOpen,
-      image: "/placeholder.svg?height=400&width=600&text=Теоретическая+база",
+      image: "main/images/2.5.svg?height=400&width=600&text=Теоретическая+база",
       features: [
         "Обширная библиотека материалов",
         "Интерактивные учебные курсы",
@@ -87,16 +87,16 @@ export default function ModulesSection() {
 
   return (
     <section>
-      <div className="text-center mb-8 md:mb-12">
-        <h2 className="text-2xl md:text-3xl font-bold mb-4">Основные модули платформы</h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto px-4">
+      <div className="text-center mb-6 sm:mb-8 md:mb-10 lg:mb-12">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4">Основные модули платформы</h2>
+        <p className="text-muted-foreground max-w-2xl mx-auto px-2 sm:px-4 text-sm sm:text-base">
           Наша платформа предлагает комплексный подход к обучению, сочетая практические тренировки с теоретической
           подготовкой
         </p>
       </div>
 
       <motion.div
-        className="space-y-12 md:space-y-16"
+        className="space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-16"
         variants={container}
         initial="hidden"
         whileInView="show"
@@ -106,32 +106,38 @@ export default function ModulesSection() {
           <motion.div
             key={module.title}
             variants={item}
-            className={`flex flex-col ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} gap-6 md:gap-8 items-center`}
+            className={`flex flex-col ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} gap-4 sm:gap-6 md:gap-8 items-center`}
           >
-            <div className="md:w-1/2 w-full">
+            <div className="w-full md:w-1/2">
               <div className="relative aspect-video rounded-xl overflow-hidden shadow-md">
                 <Image src={module.image || "/placeholder.svg"} alt={module.title} fill className="object-cover" />
               </div>
             </div>
-            <div className="md:w-1/2 w-full">
-              <div className="inline-flex items-center gap-2 bg-blue-50 text-primary px-3 py-1 rounded-full mb-4">
-                <module.icon className="h-4 w-4" />
-                <span className="text-sm font-medium">Модуль {index + 1}</span>
+            <div className="w-full md:w-1/2 mt-4 md:mt-0">
+              <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-blue-50 text-primary px-2 sm:px-3 py-0.5 sm:py-1 rounded-full mb-2 sm:mb-3 md:mb-4">
+                <module.icon className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="text-xs sm:text-sm font-medium">Модуль {index + 1}</span>
               </div>
-              <h3 className="text-xl md:text-2xl font-bold mb-3">{module.title}</h3>
-              <p className="text-muted-foreground mb-6">{module.description}</p>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3">
+                {module.title}
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">
+                {module.description}
+              </p>
 
-              <ul className="space-y-2 mb-6">
+              <ul className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6 text-sm sm:text-base">
                 {module.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0 mt-0.5" />
                     <span>{feature}</span>
                   </li>
                 ))}
               </ul>
 
-              <Button asChild>
-                <Link href={`/modules/${module.title.toLowerCase().replace(/\s+/g, "-")}`}>Подробнее о модуле</Link>
+              <Button className="text-xs sm:text-sm py-1.5 px-3 sm:py-2 sm:px-4" asChild>
+                <Link href={`/modules/${module.title.toLowerCase().replace(/\s+/g, "-")}`}>
+                  Подробнее о модуле
+                </Link>
               </Button>
             </div>
           </motion.div>

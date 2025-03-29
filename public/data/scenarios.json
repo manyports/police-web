@@ -1,0 +1,123 @@
+{
+    "scenarios": [
+    {
+      "id": 1,
+      "title": "Задержание при патрулировании города",
+      "category": "patrol",
+      "difficulty": "easy",
+      "duration": "30-45 мин",
+      "points": 70,
+      "rating": 4.8,
+      "reviews": 124,
+      "image": "/placeholder.svg?height=400&width=600&text=Патрулирование",
+      "description":
+        "Экзаменационный сценарий на знание статьи 131 УПК РК. Игрок выступает в роли сотрудника полиции, который должен провести законное процессуальное задержание. Каждое действие влияет на общий балл за экзамен.",
+      "tags": ["Патрулирование", "Задержание"],
+      "isNew": false,
+      "isPopular": true,
+      "scenarioId": "scenario-1"
+    },
+    {
+      "id": 2,
+      "title": "Расследование киберпреступления",
+      "category": "cyber",
+      "difficulty": "medium",
+      "duration": "35-45 мин",
+      "points": 70,
+      "rating": 4.7,
+      "reviews": 56,
+      "image": "/placeholder.svg?height=400&width=600&text=Дорожная+полиция",
+      "description":
+        "Сценарий проверяет ваши навыки работы в дорожной полиции. Решайте ситуации с нарушителями ПДД, регулируйте движение и обеспечивайте безопасность на дорогах.",
+      "tags": ["Следствие", "Киберпреступления"],
+      "isNew": true,
+      "isPopular": false,
+      "scenarioId": "scenario-2"
+    },
+    {
+      "id": 3,
+      "title": "Действия сотрудников полиции при захвате заложников",
+      "category": "hostage",
+      "difficulty": "hard",
+      "duration": "45-60 мин",
+      "points": 100,
+      "rating": 4.9,
+      "reviews": 87,
+      "image": "/placeholder.svg?height=400&width=600&text=Заложники",
+      "description":
+        "Сложная ситуация с захватом заложников в банке. Тренировка навыков ведения переговоров, тактического планирования и координации действий группы.",
+      "tags": ["Заложники", "Антитеррористические"],
+      "isNew": false,
+      "isPopular": true,
+      "scenarioId": "scenario-3"
+    },
+    {
+      "id": 4,
+      "title": "Расследование места преступления",
+      "category": "investigation",
+      "difficulty": "medium",
+      "duration": "40-50 мин",
+      "points": 200,
+      "rating": 4.7,
+      "reviews": 56,
+      "image": "/placeholder.svg?height=400&width=600&text=Расследование",
+      "description":
+        "Детальное изучение места преступления, сбор улик и формирование версий. Развитие навыков наблюдательности, логического мышления и процедурных знаний.",
+      "tags": ["Улики", "Анализ", "Криминалистика"],
+      "isNew": true,
+      "isPopular": false,
+      "scenarioId": "scenario-4"
+    },
+    {
+      "id": 5,
+      "title": "Кибератака на инфраструктуру",
+      "category": "cyber",
+      "difficulty": "hard",
+      "duration": "50-70 мин",
+      "points": 300,
+      "rating": 4.6,
+      "reviews": 42,
+      "image": "/placeholder.svg?height=400&width=600&text=Киберпреступления",
+      "description":
+        "Реагирование на кибератаку, направленную на критическую инфраструктуру. Отработка навыков цифровой криминалистики, координации с техническими специалистами и принятия решений в условиях неопределенности.",
+      "tags": ["Кибербезопасность", "Технологии", "Расследование"],
+      "isNew": true,
+      "isPopular": false,
+      "scenarioId": "scenario-5"
+    },
+    {
+      "id": 6,
+      "title": "Штурм здания с террористами",
+      "category": "investigation",
+      "difficulty": "extreme",
+      "duration": "30-40 мин",
+      "points": 400,
+      "rating": 4.9,
+      "reviews": 103,
+      "image": "/placeholder.svg?height=400&width=600&text=Тактический",
+      "description":
+        "Высокоинтенсивный сценарий штурма здания, захваченного террористами. Тренировка тактических навыков, командной работы и принятия решений под давлением.",
+      "tags": ["Штурм", "Спецоперация", "Командная работа"],
+      "isNew": false,
+      "isPopular": true,
+      "scenarioId": "scenario-6"
+    },
+    {
+      "id": 7,
+      "title": "Дорожно-транспортное происшествие",
+      "category": "patrol",
+      "difficulty": "easy",
+      "duration": "20-30 мин",
+      "points": 100,
+      "rating": 4.5,
+      "reviews": 78,
+      "image": "/placeholder.svg?height=400&width=600&text=ДТП",
+      "description":
+        "Реагирование на дорожно-транспортное происшествие с пострадавшими. Отработка навыков оказания первой помощи, обеспечения безопасности места происшествия и сбора информации для отчета.",
+      "tags": ["ДТП", "Первая помощь", "Документирование"],
+      "isNew": false,
+      "isPopular": false,
+      "scenarioId": "scenario-7"
+    }
+  ]
+}
