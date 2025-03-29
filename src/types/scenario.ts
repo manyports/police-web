@@ -65,6 +65,10 @@ export type ScenarioData = {
   description: string;
   previewImageUrl?: string;
   scenes: Scene[];
+  userId?: string;
+  isPublic?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export type ScenarioResult = {

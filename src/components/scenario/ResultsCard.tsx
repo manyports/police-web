@@ -8,7 +8,6 @@ interface ResultsCardProps {
 }
 
 const ResultsCard: React.FC<ResultsCardProps> = ({ result, onRestart }) => {
-  // Убедимся, что у нас есть все необходимые данные
   if (!result || typeof result.totalScore !== 'number' || typeof result.maxPossibleScore !== 'number') {
     return (
       <div className="flex flex-col gap-6 p-6 rounded-lg border border-gray-200 shadow-sm">
@@ -30,7 +29,6 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ result, onRestart }) => {
     );
   }
 
-  // Безопасный расчет процента
   const scorePercentage = result.maxPossibleScore > 0 
     ? Math.round((result.totalScore / result.maxPossibleScore) * 100)
     : 0;
@@ -61,7 +59,6 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ result, onRestart }) => {
     };
   }
 
-  // Убедимся, что массивы mistakes и recommendations существуют
   const mistakes = Array.isArray(result.mistakes) ? result.mistakes : [];
   const recommendations = Array.isArray(result.recommendations) ? result.recommendations : [];
 

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ScenarioProvider } from "@/contexts/ScenarioContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
@@ -38,11 +39,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
         <div className="flex flex-col min-h-screen">
-          <Header />
-          <ScenarioProvider>
-            <main className="flex-grow">{children}</main>
-          </ScenarioProvider>
-          <Footer />
+          <AuthProvider>
+            <Header />
+            <ScenarioProvider>
+              <main className="flex-grow">{children}</main>
+            </ScenarioProvider>
+            <Footer />
+          </AuthProvider>
         </div>
       </body>
     </html>
