@@ -177,7 +177,7 @@ export default function ScenarioStartPage() {
             <div className="flex items-center justify-between">
               <CardTitle className="text-2xl md:text-3xl text-blue-900">{scenario.title}</CardTitle>
               <Badge variant="outline" className="bg-blue-700 text-white px-3 py-1">
-                Сценарий #{scenario.id}
+                {scenario.id}
               </Badge>
             </div>
             <CardDescription className="text-blue-700 mt-2">

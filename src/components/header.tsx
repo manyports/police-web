@@ -1,16 +1,20 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Search, Menu, X, Shield, User, Bell } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 
 export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
 
+  const router = useRouter()
   const { scrollY } = useScroll()
   const headerBg = useTransform(scrollY, [0, 50], ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"])
   const headerShadow = useTransform(scrollY, [0, 50], ["0 0 0 rgba(0, 0, 0, 0)", "0 4px 20px rgba(0, 0, 0, 0.05)"])
@@ -96,15 +100,42 @@ export default function Header() {
           )}
 
           <div className="hidden md:flex items-center gap-3">
-            <Button variant="ghost" size="icon">
-              <Bell className="h-5 w-5" />
-            </Button>
+            <div className="relative">
+              <Button variant="ghost" size="icon" onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}>
+                <Bell className="h-5 w-5" />
+              </Button>
+              <AnimatePresence>
+                {isNotificationsOpen && 
+                  <motion.div
+                    initial={{ opacity: 0, y: 0 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -60 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Card className="w-fit shadow-lg absolute top-16">
+                      <CardHeader className="flex items-center gap-2 flex-row">
+                      <div className="flex items-center gap-2">
+                        <Bell className="w-4 h-4 rounded-md" />
+                        <CardTitle className="text-center text-lg">Уведомления</CardTitle>
+                      </div>
+                      <button onClick={() => setIsNotificationsOpen(false)}>
+                        <X className="w-4 h-4 font-bold hover:bg-gray-100 rounded-md mb-1 transition-all duration-500" />
+                      </button>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-center text-sm text-muted-foreground">Уведомлений нет</p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                }
+              </AnimatePresence>
+            </div>
 
-            <Button variant="ghost" size="icon">
+            <Button className="relative" variant="ghost" size="icon" onClick={() => router.push("/profile")}>
               <User className="h-5 w-5" />
             </Button>
 
-            <Button>Войти</Button>
+            <Button onClick={() => router.push("/login")}>Войти</Button>
           </div>
 
           <button
@@ -143,12 +174,12 @@ export default function Header() {
                 Уведомления
               </Button>
 
-              <Button variant="outline" className="w-full justify-start">
+              <Button variant="outline" className="w-full justify-start" onClick={() => router.push("/profile")}>
                 <User className="h-5 w-5 mr-2" />
                 Профиль
               </Button>
 
-              <Button className="w-full">Войти</Button>
+              <Button className="w-full" onClick={() => router.push("/login")}>Войти</Button>
             </div>
           </div>
         </motion.div>

@@ -17,7 +17,7 @@ export default function ScenariosPage() {
   const [scenarios, setScenarios] = useState<Scenario[]>([])
 
   useEffect(() => {
-    fetch('/data/scenаrios.json')
+    fetch('/data/scenarios.json')
       .then(response => response.json())
       .then(data => setScenarios(data.scenarios))
   }, [])

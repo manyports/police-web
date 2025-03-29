@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams  } from "next/navigation";
 import { firstScenario } from "@/data/first-scenario";
 import { secondScenario } from "@/data/second-scenario";
 import { thirdScenario } from "@/data/third-scenario";
@@ -15,7 +15,6 @@ import ProgressIndicator from "@/components/scenario/ProgressIndicator";
 import ResultsCard from "@/components/scenario/ResultsCard";
 
 const ScenarioPlayer = () => {
-  const router = useRouter();
   const params = useParams();
   const scenarioId = params.id as string;
   
@@ -34,22 +33,30 @@ const ScenarioPlayer = () => {
 
   useEffect(() => {
     // Load the appropriate scenario based on the scenario ID
-    if (scenarioId === "scenario-1") {
-      setScenario(firstScenario);
-    } else if (scenarioId === "scenario-2") {
-      setScenario(secondScenario);
-    } else if (scenarioId === "scenario-3") {
-      setScenario(thirdScenario);
-    } else if (scenarioId === "scenario-4") {
-      setScenario(fourthScenario);
-    } else if (scenarioId === "scenario-5") {
-      setScenario(fifthScenario);
-    } else if (scenarioId === "scenario-6") {
-      setScenario(sixthScenario);
-    } else if (scenarioId === "scenario-7") {
-      setScenario(seventhScenario);
-    } else {
-      setScenario(firstScenario);
+    switch (scenarioId) {
+      case "scenario-1":
+        setScenario(firstScenario);
+        break;
+      case "scenario-2":
+        setScenario(secondScenario);
+        break;
+      case "scenario-3":
+        setScenario(thirdScenario);
+        break;
+      case "scenario-4":
+        setScenario(fourthScenario);
+        break;
+      case "scenario-5":
+        setScenario(fifthScenario);
+        break;
+      case "scenario-6":
+        setScenario(sixthScenario);
+        break;
+      case "scenario-7":
+        setScenario(seventhScenario);
+        break;
+      default:
+        setScenario(firstScenario);
     }
   }, [scenarioId, setScenario]);
 
