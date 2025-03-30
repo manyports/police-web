@@ -71,37 +71,6 @@ export default function WeaponsViewerPage() {
     setIsFullscreen(!isFullscreen)
   }
 
-  const getWeaponDescription = (weaponId: string): string => {
-    let description = "";
-    
-    if (weaponId === "ak74m") {
-      // Ищем описание для АК
-      const akData = weaponsJsonData.filter(w => 
-        w.category === "Автоматы" && 
-        (w.title.includes("Калашникова") || w.title.includes("АК"))
-      );
-      
-      // Берем основное описание
-      const mainDesc = akData.find(w => !w.title.includes("технические характеристики"))?.description || "";
-      if (mainDesc) description = mainDesc;
-      
-    } else if (weaponId === "makarov") {
-      // Ищем описание для ПМ
-      const pmData = weaponsJsonData.filter(w => 
-        w.title.includes("Макарова") && 
-        !w.title.includes("технические характеристики") && 
-        !w.title.includes("разборка")
-      );
-      
-      const mainDesc = pmData.find(w => w.description)?.description || "";
-      if (mainDesc) description = mainDesc;
-      
-    } else if (weaponId === "tt") {
-      // Для ТТ у нас нет данных в JSON, оставляем старое описание
-    }
-    
-    return description;
-  };
 
   const weapons: WeaponInfo[] = [
     {
