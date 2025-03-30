@@ -6,6 +6,8 @@ import { AnimatePresence, motion } from "framer-motion"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { BookOpen } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 const scrollbarHideStyles = `
   .no-scrollbar::-webkit-scrollbar {
@@ -34,11 +36,29 @@ interface Weapon {
   image?: string
 }
 
+interface Course {
+  id: number
+  title: string
+  description: string
+}
+
 export default function TheoryPage() {
     const [lawsData, setLawsData] = useState<{ laws: LegalCode[] }>({ laws: [] })
     const [weaponsData, setWeaponsData] = useState<{ weapons: Weapon[] }>({ weapons: [] })
     const [selectedWeapon, setSelectedWeapon] = useState<Weapon | null>(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [coursesData, setCoursesData] = useState<{ courses: Course[] }>({ courses: [] })
+    const [isMobile, setIsMobile] = useState(false)
+    const router = useRouter()
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth < 768)
+      }
+      window.addEventListener('resize', handleResize)
+      handleResize()
+      return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     useEffect(() => {
       const fetchLawsData = async () => {
@@ -60,9 +80,20 @@ export default function TheoryPage() {
           console.error('Error fetching weapons data:', error)
         }
       }
-      
+
+      const fetchCoursesData = async () => {
+        try {
+          const response = await fetch('/data/courses.json')
+          const data = await response.json()
+          setCoursesData(data)
+        } catch (error) {
+          console.error('Error fetching courses data:', error)
+        }
+      }
+
       fetchLawsData()
       fetchWeaponsData()
+      fetchCoursesData()
     }, [])
     
     const openModal = (weapon: Weapon) => {
@@ -94,13 +125,19 @@ export default function TheoryPage() {
               value="laws"
               className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base transition-all duration-300 relative z-10 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2"
             >
-              Законы и кодексы
+              Законы {isMobile ? '' : 'и кодексы'}
             </TabsTrigger>
             <TabsTrigger 
               value="weapons"
               className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base transition-all duration-300 relative z-10 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2"
             >
-              Оружие и правила обращения
+              Оружие {isMobile ? '' : 'и правила обращения'}
+            </TabsTrigger>
+            <TabsTrigger 
+              value="courses"
+              className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base transition-all duration-300 relative z-10 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2"
+            >
+              Курсы
             </TabsTrigger>
           </TabsList>
         </div>
@@ -243,6 +280,72 @@ export default function TheoryPage() {
                   }}
                 >
                   <p className="text-base sm:text-lg text-muted-foreground">Загрузка информации об оружии...</p>
+                </motion.div>
+              </div>
+            )}
+          </motion.div>
+        </TabsContent>
+
+        <TabsContent value="courses">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="focus:outline-none"
+          >
+            <h2 className="text-xl sm:text-2xl font-semibold mb-6 sm:mb-8 text-center">
+              <span className="inline-block pb-2 border-b-2 border-primary/50">
+                Курсы
+              </span>
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+              {coursesData.courses.map((course: Course, index: number) => (
+                <motion.div 
+                  key={course.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease: "easeOut", delay: 0.05*index }}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  className="h-full"
+                >
+                  <Card className="h-full flex flex-col shadow-lg border-opacity-50 hover:shadow-xl transition-shadow duration-300 group">
+                    <CardHeader className="pb-2 sm:pb-3 space-y-1.5">
+                      <div className="flex justify-between items-start gap-3">
+                        <CardTitle className="text-lg sm:text-xl group-hover:text-primary transition-colors duration-300">{course.title}</CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="flex-grow pt-0">
+                      <p className="text-muted-foreground line-clamp-4 overflow-hidden leading-relaxed text-sm sm:text-base">{course.description}</p>
+                    </CardContent>
+                    <CardFooter className="pt-3 sm:pt-4 border-t">
+                      <Button 
+                        className="w-full font-medium shadow-sm transition-all duration-300 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2" 
+                        onClick={() => router.push(`/theory/course/${course.id}`)}
+                      >
+                        <span className="flex items-center justify-center gap-2">
+                          <span>Подробнее</span>
+                          <BookOpen className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                        </span>
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+            
+            {coursesData.courses.length === 0 && (
+              <div className="text-center py-10 sm:py-16">
+                <motion.div
+                  animate={{ 
+                    opacity: [0.5, 1, 0.5],
+                    scale: [0.98, 1, 0.98]
+                  }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    duration: 2
+                  }}
+                >
+                  <p className="text-base sm:text-lg text-muted-foreground">Загрузка информации о курсах...</p>
                 </motion.div>
               </div>
             )}

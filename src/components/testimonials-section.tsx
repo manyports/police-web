@@ -15,7 +15,7 @@ export default function TestimonialsSection() {
       name: "Александр Петров",
       role: "Начальник отдела подготовки",
       text: "Внедрение этой платформы позволило нам значительно повысить качество подготовки сотрудников. Особенно ценна возможность моделировать сложные ситуации без риска для жизни и здоровья.",
-      image: "/placeholder.svg?height=100&width=100",
+      image: "/images/elements/Sasha.jpg?height=100&width=100",
       rating: 5,
     },
     {
@@ -23,7 +23,7 @@ export default function TestimonialsSection() {
       name: "Елена Соколова",
       role: "Инструктор тактической подготовки",
       text: "Как инструктор, я высоко ценю аналитические возможности платформы. Детальный разбор действий позволяет выявлять слабые места и целенаправленно работать над их устранением.",
-      image: "/placeholder.svg?height=100&width=100",
+      image: "/images/elements/Elen.jpg?height=100&width=100",
       rating: 5,
     },
     {
@@ -31,8 +31,8 @@ export default function TestimonialsSection() {
       name: "Дмитрий Волков",
       role: "Сотрудник спецподразделения",
       text: "Тренировки в виртуальной реальности дают ощущение полного погружения. После регулярных занятий на платформе я стал действовать более уверенно и эффективно в реальных ситуациях.",
-      image: "/placeholder.svg?height=100&width=100",
-      rating: 4,
+      image: "/images/elements/Dima.jpg?height=100&width=100",
+      rating: 4,  
     },
   ]
 
