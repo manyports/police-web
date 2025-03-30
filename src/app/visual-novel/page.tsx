@@ -256,7 +256,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/workplace.png?height=720&width=1280&text=Офис+НовТех+-+Рабочий+стол",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+НовТех+-+Рабочий+стол",
       dialogs: [
         { character: null, text: "Вы внимательно осматриваете рабочий стол Новикова." },
         { character: "protagonist", text: "Так, что у нас тут..." },
@@ -285,7 +285,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/relaxroom.png?height=720&width=1280&text=Офис+НовТех+-+Комната+отдыха",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+НовТех+-+Комната+отдыха",
       dialogs: [
         { character: null, text: "Вы находите Анну Петрову в комнате отдыха. Она выглядит потрясенной." },
         { character: "protagonist", text: "Мисс Петрова? Я детектив из отдела особо важных дел. Могу я задать вам несколько вопросов?" },
@@ -352,7 +352,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/cameras.png?height=720&width=1280&text=Офис+НовТех+-+Камеры+наблюдения",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+НовТех+-+Камеры+наблюдения",
       dialogs: [
         { character: null, text: "Вы направляетесь в комнату охраны, чтобы проверить записи с камер наблюдения." },
         { character: "protagonist", text: "Здравствуйте. Мне нужны записи с камер за вчерашний вечер, примерно с 19:00 до 21:00." },
@@ -390,7 +390,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/relaxroom.png?height=720&width=1280&text=Офис+НовТех+-+Комната+отдыха",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+НовТех+-+Комната+отдыха",
       dialogs: [
         { character: "protagonist", text: "Мисс Петрова, расскажите, пожалуйста, о личной жизни Виктора Новикова." },
         { character: "witness", text: "Ну... Он недавно развелся с женой, Еленой. Брак распался около полугода назад." },
@@ -420,7 +420,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/relaxroom.png?height=720&width=1280&text=Офис+НовТех+-+Комната+отдыха",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+НовТех+-+Комната+отдыха",
       dialogs: [
         { character: "protagonist", text: "Расскажите подробнее о Елене, бывшей жене Новикова." },
         { character: "witness", text: "Елена Новикова... или теперь снова Орлова, ее девичья фамилия. Они были женаты 15 лет." },
@@ -449,7 +449,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/relaxroom.png?height=720&width=1280&text=Офис+НовТех+-+Комната+отдыха",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+НовТех+-+Комната+отдыха",
       dialogs: [
         { character: "protagonist", text: "А что вы можете рассказать о Сергее Васнецове?" },
         { character: "witness", text: "Сергей Васнецов - глава 'ТехноПрогресс', основного конкурента 'НовТех'." },
@@ -479,7 +479,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/computer.png?height=720&width=1280&text=Офис+НовТех+-+Компьютер",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+НовТех+-+Компьютер",
       dialogs: [
         { character: null, text: "Вы подключаете флешку к компьютеру и просматриваете ее содержимое." },
         { character: "protagonist", text: "Так, что тут у нас..." },
@@ -542,7 +542,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/kravtsov_office.png?height=720&width=1280&text=Офис+Кравцова",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+Кравцова",
       dialogs: [
         { character: null, text: "Вы находите Игоря Кравцова в его офисе. Он выглядит напряженным, но старается сохранять спокойствие." },
         { character: "protagonist", text: "Игорь Кравцов? Я детектив из отдела особо важных дел. Мне нужно задать вам несколько вопросов об убийстве Виктора Новикова." },
@@ -578,7 +578,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/elena_apartment.png?height=720&width=1280&text=Квартира+Елены+Орловой",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Квартира+Елены+Орловой",
       dialogs: [
         { character: null, text: "Вы находите Елену Орлову в ее квартире. Она выглядит удивленной вашим визитом." },
         { character: "protagonist", text: "Елена Орлова? Я детектив из отдела особо важных дел. Мне нужно поговорить с вами о Викторе Новикове." },
@@ -650,7 +650,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/legal_department.png?height=720&width=1280&text=Офис+НовТех+-+Юридический+отдел",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+НовТех+-+Юридический+отдел",
       dialogs: [
         { character: null, text: "Вы находите Марину Соловьеву в юридическом отделе. Она выглядит расстроенной новостью о смерти Новикова." },
         { character: "protagonist", text: "Марина Соловьева? Я детектив из отдела особо важных дел. Мне нужно задать вам несколько вопросов о Викторе Новикове." },
@@ -686,7 +686,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/klimov_office.png?height=720&width=1280&text=Офис+НовТех+-+Кабинет+Климова",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+НовТех+-+Кабинет+Климова",
       dialogs: [
         { character: null, text: "Вы находите бывший кабинет Андрея Климова, который теперь занимает другой сотрудник." },
         { character: "protagonist", text: "Извините за беспокойство. Я ищу информацию об Андрее Климове, который раньше работал здесь." },
@@ -717,7 +717,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/vasnetsov_office.png?height=720&width=1280&text=Офис+Васнецова",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+Васнецова",
       dialogs: [
         { character: null, text: "Вы приезжаете в офис 'ТехноПрогресс' для встречи с Сергеем Васнецовым." },
         { character: "protagonist", text: "Сергей Васнецов? Я детектив из отдела особо важных дел. Мне нужно поговорить с вами о Викторе Новикове." },
@@ -785,7 +785,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/kravtsov_office.png?height=720&width=1280&text=Офис+Кравцова",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+Кравцова",
       dialogs: [
         { character: "protagonist", text: "Игорь, я хочу показать вам кое-что." },
         { character: null, text: "Вы достаете фотографии, на которых Кравцов передает конверт Зотову." },
@@ -818,7 +818,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/kravtsov_office.png?height=720&width=1280&text=Офис+Кравцова",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+Кравцова",
       dialogs: [
         { character: "protagonist", text: "Игорь, мы изучили финансовые отчеты вашей компании." },
         { character: null, text: "Вы показываете Кравцову документы с флешки Новикова." },
@@ -850,7 +850,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/kravtsov_office.png?height=720&width=1280&text=Офис+Кравцова",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+Кравцова",
       dialogs: [
         { character: "protagonist", text: "Игорь, что означают эти цифры?" },
         { character: null, text: "Вы показываете Кравцову записку с цифрами 7-3-9-2-5, найденную в кармане Новикова." },
@@ -883,7 +883,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/elena_apartment.png?height=720&width=1280&text=Квартира+Елены+Орловой",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Квартира+Елены+Орловой",
       dialogs: [
         { character: "protagonist", text: "Елена, я вижу, что вы нервничаете. Камеры зафиксировали женщину, похожую на вас, входящую в здание 'НовТех' вчера в 20:30." },
         { character: null, text: "Елена: 'Я... Хорошо, да, это была я. Но я не убивала Виктора!'" },
@@ -915,7 +915,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/laboratory.png?height=720&width=1280&text=Офис+НовТех+-+Лаборатория",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+НовТех+-+Лаборатория",
       dialogs: [
         { character: null, text: "Вы отправляете запонку, найденную на месте преступления, на экспертизу." },
         { character: "forensic", text: "Интересная находка, детектив. Это дорогая запонка ручной работы." },
@@ -947,7 +947,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/restaurant.png?height=720&width=1280&text=Ресторан+Метрополь",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Ресторан+Метрополь",
       dialogs: [
         { character: null, text: "Вы приезжаете в ресторан 'Метрополь', чтобы опросить персонал о вечере убийства." },
         { character: "protagonist", text: "Здравствуйте. Я детектив из отдела особо важных дел. Мне нужна информация о посетителях, которые были здесь вчера вечером." },
@@ -981,7 +981,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/legal_department.png?height=720&width=1280&text=Офис+НовТех+-+Юридический+отдел",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+НовТех+-+Юридический+отдел",
       dialogs: [
         { character: "protagonist", text: "Марина, что вы знаете об отношениях Елены Орловой и Виктора Новикова после развода?" },
         { character: null, text: "Марина: 'Они были... напряженными. Елена считала, что Виктор обманул ее при разделе имущества.'" },
@@ -1012,7 +1012,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/legal_department.png?height=720&width=1280&text=Офис+НовТех+-+Юридический+отдел",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+НовТех+-+Юридический+отдел",
       dialogs: [
         { character: "protagonist", text: "Марина, знаете ли вы о других врагах Виктора Новикова?" },
         { character: null, text: "Марина: 'Кроме Кравцова и Васнецова? Ну, был еще Андрей Климов, его бывший заместитель.'" },
@@ -1044,7 +1044,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/legal_department.png?height=720&width=1280&text=Офис+НовТех+-+Юридический+отдел",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Офис+НовТех+-+Юридический+отдел",
       dialogs: [
         { character: "protagonist", text: "Марина, где вы были вчера вечером после ужина с Новиковым?" },
         { character: null, text: "Марина: 'Я поехала домой. Была там примерно с 19:30.'" },
@@ -1077,7 +1077,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/techprogress_office.png?height=720&width=1280&text=Офис+ТехноПрогресс",
+      background: "/images/novel/locations/novtech.png?height=720&width=1280&text=Офис+ТехноПрогресс",
       dialogs: [  
         { character: "protagonist", text: "Сергей, расскажите о ваших отношениях с Андреем Климовым." },
         { character: null, text: "Васнецов: 'Андрей? Он работает у меня последние несколько недель. Талантливый специалист.'" },
@@ -1110,7 +1110,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/techprogress_office.png?height=720&width=1280&text=Офис+ТехноПрогресс",
+      background: "/images/novel/locations/novtech.png?height=720&width=1280&text=Офис+ТехноПрогресс",
       dialogs: [
         { character: "protagonist", text: "Сергей, вы знакомы с Игорем Кравцовым?" },
         { character: null, text: "Васнецов: 'Конечно. Мы в одной отрасли, пересекались на различных мероприятиях.'" },
@@ -1143,7 +1143,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/techprogress_office.png?height=720&width=1280&text=Офис+ТехноПрогресс",
+      background: "/images/novel/locations/novtech.png?height=720&width=1280&text=Офис+ТехноПрогресс",
       dialogs: [
         { character: "protagonist", text: "Сергей, вы уже знаете результаты тендера на госконтракт?" },
         { character: null, text: "Васнецов: 'Да, объявили сегодня утром. Мы выиграли.'" },
@@ -1178,7 +1178,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/techprogress_office.png?height=720&width=1280&text=Офис+ТехноПрогресс",
+      background: "/images/novel/locations/novtech.png?height=720&width=1280&text=Офис+ТехноПрогресс",
       dialogs: [
         { character: "protagonist", text: "Сергей, что это?" },
         { character: null, text: "Вы показываете Васнецову запонку, найденную на месте преступления." },
@@ -1214,7 +1214,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/elena_apartment.png?height=720&width=1280&text=Квартира+Елены+Орловой",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Квартира+Елены+Орловой",
       dialogs: [
         { character: "protagonist", text: "Елена, расскажите о ваших отношениях с Сергеем Васнецовым." },
         { character: null, text: "Елена выглядит удивленной." },
@@ -1251,7 +1251,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/images/novel/locations/questioning_room.png?height=720&width=1280&text=Полицейский+участок+-+Комната+для+допросов",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Полицейский+участок+-+Комната+для+допросов",
       dialogs: [
         { character: null, text: "После сбора всех улик и показаний вы возвращаетесь в участок для анализа дела." },
         { character: "captain", text: "Итак, детектив, что у вас есть?" },
@@ -1285,7 +1285,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/placeholder.svg?height=720&width=1280&text=Полицейский+участок+-+Зал+для+брифингов",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Полицейский+участок+-+Зал+для+брифингов",
       dialogs: [
         { character: null, text: "Вы собираете всех подозреваемых в зале для брифингов. Напряжение ощутимо." },
         { character: "protagonist", text: "Благодарю всех за то, что пришли. Как вы знаете, мы расследуем убийство Виктора Новикова." },
@@ -1322,7 +1322,7 @@ export default function VisualNovelPage() {
       }
     },
     {
-      background: "/placeholder.svg?height=720&width=1280&text=Полицейский+участок+-+Кабинет+капитана",
+      background: "/images/novel/locations/office_universal.png?height=720&width=1280&text=Полицейский+участок+-+Кабинет+капитана",
       dialogs: [
         { character: null, text: "После ареста Васнецова и Елены вы возвращаетесь в кабинет капитана для подведения итогов." },
         { character: "captain", text: "Отличная работа, детектив. Дело закрыто." },
@@ -1510,7 +1510,7 @@ export default function VisualNovelPage() {
           <div className="relative flex-grow">
             <div className="absolute inset-0">
               <Image
-                src={scenes[currentScene]?.background || "/placeholder.svg"}
+                src={scenes[currentScene]?.background || "/images/novel/locations/office_universal.png"}
                 alt="Background"
                 fill
                 className="object-cover"
@@ -1520,7 +1520,7 @@ export default function VisualNovelPage() {
 
             <AnimatePresence mode="wait">
               {getCurrentDialog()?.character && (
-                <div className="absolute bottom-[220px] left-1/2 -translate-x-1/2">
+                <div className="absolute bottom-[150px] left-1/2 -translate-x-1/2">
                   <motion.div
                     initial={{ opacity: 0, y: 50, scale: 0.9 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -1535,7 +1535,7 @@ export default function VisualNovelPage() {
                     className="relative h-[400px] w-[300px]"
                   >
                     <Image
-                      src={getCharacterImage(getCurrentDialog()?.character || null) || "/placeholder.svg"}
+                      src={getCharacterImage(getCurrentDialog()?.character || null) || "/images/novel/locations/office_universal.png"}
                       alt={getCharacterName(getCurrentDialog()?.character || null) || "Character"}
                       fill
                       className="object-contain"
@@ -1856,7 +1856,7 @@ export default function VisualNovelPage() {
             className="relative w-full max-w-4xl aspect-video rounded-xl overflow-hidden mb-8"
           >
             <Image
-              src="/placeholder.svg?height=720&width=1280&text=Дело+раскрыто"
+              src="/images/novel/visualprev.jpg?height=720&width=1280&text=Дело+раскрыто"
               alt="Дело раскрыто"
               fill
               className="object-cover"
@@ -1864,7 +1864,7 @@ export default function VisualNovelPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
               <div className="p-8">
                 <h2 className="text-2xl font-bold mb-2">Преступники наказаны, справедливость восторжествовала</h2>
-                <p className="text-gray-300">
+                <p className="text-gray-800">
                   Благодаря вашим навыкам детектива, внимательности и логическому мышлению, убийцы были найдены и
                   арестованы.
                 </p>
