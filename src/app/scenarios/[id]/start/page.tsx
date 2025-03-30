@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { ArrowRight, Book, Target, Scale } from "lucide-react"
+import { ArrowRight, Book, Target, Scale, Users } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -74,7 +74,8 @@ const scenariosData = [
       "Нейтрализовать террористов",
       "Освободить захваченное здание",
       "Обеспечить безопасность гражданских лиц"
-    ]
+    ],
+    isMultiplayer: true
   },
   {
     id: "scenario-7",
@@ -102,6 +103,7 @@ interface Scenario {
   lawIds: number[]
   laws?: Law[]
   objectives: string[]
+  isMultiplayer?: boolean
 }
 
 export default function ScenarioStartPage() {
@@ -176,9 +178,16 @@ export default function ScenarioStartPage() {
           <CardHeader className="bg-blue-100 rounded-t-lg">
             <div className="flex items-center justify-between">
               <CardTitle className="text-2xl md:text-3xl text-blue-900">{scenario.title}</CardTitle>
-              <Badge variant="outline" className="bg-blue-700 text-white px-3 py-1">
-                {scenario.id}
-              </Badge>
+              <div className="flex gap-2">
+                {scenario.isMultiplayer && (
+                  <Badge className="bg-purple-600 text-white px-3 py-1">
+                    Мультиплеер
+                  </Badge>
+                )}
+                <Badge variant="outline" className="bg-blue-700 text-white px-3 py-1">
+                  {scenario.id}
+                </Badge>
+              </div>
             </div>
             <CardDescription className="text-blue-700 mt-2">
               Тренировочный сценарий для отработки профессиональных навыков
@@ -186,6 +195,24 @@ export default function ScenarioStartPage() {
           </CardHeader>
           
           <CardContent className="pt-6 pb-2 space-y-6">
+            {scenario.isMultiplayer && (
+              <div className="p-4 bg-purple-50 rounded-lg border border-purple-200 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="text-purple-600 mt-1">
+                    <Users className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-purple-800 mb-1">Мультиплеерный режим</h3>
+                    <p className="text-sm text-purple-700">
+                      Этот сценарий предназначен для совместного прохождения несколькими участниками.
+                      Рекомендуется команда из 2-4 человек для максимальной эффективности. 
+                      Координация действий и распределение ролей критически важны для успешного выполнения миссии.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-blue-800">
                 <Scale className="h-5 w-5" />

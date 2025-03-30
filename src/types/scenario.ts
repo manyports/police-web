@@ -36,6 +36,7 @@ export interface Scenario {
   tags: string[]
   isNew: boolean
   isPopular: boolean
+  isMultiplayer?: boolean
   objectives: string[]
   steps: ScenarioStep[]
   legalCodes: LegalCode[]
@@ -67,6 +68,7 @@ export type ScenarioData = {
   scenes: Scene[];
   userId?: string;
   isPublic?: boolean;
+  isMultiplayer?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 };

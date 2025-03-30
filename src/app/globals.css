@@ -143,3 +143,28 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+
+/* Стили для кастомной полосы прокрутки */
+.scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #bfbfbf;
+  border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #8b8b8b;
+}
+
+/* Поддержка Firefox */
+.scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #bfbfbf #f1f1f1;
+}
