@@ -125,7 +125,7 @@ export default function About() {
           </motion.h2>
           <motion.div 
             variants={item}
-            className="grid grid-cols-1 md:grid-cols-4 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
           >
             <motion.div
               variants={item}
@@ -136,26 +136,6 @@ export default function About() {
               </div>
               <h3 className="font-bold mb-1">Базарбаев Ерасыл</h3>
               <p className="text-gray-600 dark:text-gray-400 text-sm">Developer</p>
-            </motion.div>
-            <motion.div
-              variants={item}
-              className="flex flex-col items-center text-center"
-            >
-              <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
-                <Image width={128} height={128} src="/images/elements/Ayzhas.jpg?height=128&width=128&text=Фото" alt="Team member" className="object-cover w-full h-full" />
-              </div>
-              <h3 className="font-bold mb-1">Сериков Айжас</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Developer</p>
-            </motion.div>
-            <motion.div
-              variants={item}
-              className="flex flex-col items-center text-center"
-            >
-              <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
-                <Image width={128} height={128} src="/images/elements/Alinur.jpg?height=128&width=128&text=Фото" alt="Team member" className="object-cover w-full h-full" />
-              </div>
-              <h3 className="font-bold mb-1">Толбаев Алинур</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Team-Lead | Creativity Director</p>
             </motion.div>
             <motion.div
               variants={item}
